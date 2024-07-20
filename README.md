@@ -259,14 +259,81 @@ int main(){
   
 ![image](https://github.com/user-attachments/assets/12987b23-bf07-46b8-8515-8a86eed5ddf4)
 
+# BÀI 5: GOTO - SETJMP
+## 5.1 Goto
+**goto** là một từ khóa trong ngôn ngữ lập trình C, cho phép chương trình nhảy đến một nhãn (label) đã được đặt trước đó trong cùng một hàm. 
 
+Mặc dù nó cung cấp khả năng kiểm soát flow của chương trình, nhưng việc sử dụng goto thường được xem là không tốt vì nó có thể làm cho mã nguồn trở nên khó đọc và khó bảo trì.
 
+Lệnh goto chỉ dùng cục bộ trong hàm.
+- Ví dụ:
+```
+#include<stdio.h>
 
+int main(){
+    int i = 0;
 
+	// Đặt nhãn start
+    start:
+    if(i >= 5){
+        goto end;	// i >= 5 sẽ di chuyển đến nhãn end
+    }
 
+    printf("%d\n", i);
+    i++;
+	goto start;		// Di chuyển đến nhãn start
 
+	// Đặt nhãn end
+    end:
+    printf("\n");
 
+    return 0;
+}
+```
 
+## 5.2 Thư viện setjmp.h
+**setjmp.h** là một thư viện trong ngôn ngữ lập trình C, cung cấp hai hàm chính là **setjmp()** và **longjmp()**. 
+
+Cả hai hàm này thường được sử dụng để thực hiện xử lý ngoại lệ trong C, mặc dù nó không phải là một cách tiêu biểu để xử lý ngoại lệ trong ngôn ngữ này.
+
+- **jmp_buf**: Kiểu dữ liệu được định nghĩa trong setjmp.h
+```
+jmp_buf buffer;
+```
+- **int set_jmp(BUF)**: Nếu macro này trả về một cách trực tiếp từ lời gọi macro, thì nó trả về 0; nhưng nếu nó trả về từ một lời gọi hàm **longjmp()**, thì một giá trị khác 0 được trả về.
+```
+#include<stdio.h>
+#include<setjmp.h>
+
+jmp_buf buf;
+int exception_code;
+
+#define TRY         if((exception_code = setjmp(buf)) == 0)
+#define CATCH(x)    else if(exception_code == x)
+#define THROW(x)    longjmp(buf, x)
+
+double divide(int a, int b){
+    if(b == 0){
+        THROW(1);
+    }
+    return a/(double)b;
+}
+
+int main(){
+    double result;
+
+    TRY{
+        result = divide(17, 0);
+        printf("Result: %f\n", result);
+    } CATCH(1){
+        printf("Error: Divided by 0!\n");
+    } CATCH(2){
+        // Lỗi thứ 2
+    } // Các lỗi khác
+
+    return 0;
+}
+```
 
 
 
