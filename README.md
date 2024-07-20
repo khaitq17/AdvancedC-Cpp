@@ -298,7 +298,7 @@ Cả hai hàm này thường được sử dụng để thực hiện xử lý n
 
 - **jmp_buf**: Kiểu dữ liệu được định nghĩa trong setjmp.h
 ```
-jmp_buf buffer;
+jmp_buf buffer;	// Biến toàn cục
 ```
 - **int set_jmp(BUF)**: Nếu macro này trả về một cách trực tiếp từ lời gọi macro, thì nó trả về 0; nhưng nếu nó trả về từ một lời gọi hàm **longjmp()**, thì một giá trị khác 0 được trả về.
 ```
