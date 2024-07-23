@@ -259,6 +259,107 @@ int main(){
   
 ![image](https://github.com/user-attachments/assets/12987b23-bf07-46b8-8515-8a86eed5ddf4)
 
+# BÀI 4: EXTERN - STATIC - VOLATILE - REGISTER
+## 4.1 Extern
+- **Extern** được sử dụng để lấy 1 biến hoặc 1 hàm đã được khai báo trong 1 file nguồn khác vào chương trình hiện tại.
+- Giúp quản lý liên kết giữa các file nguồn.
+
+Ví dụ:
+
+File `test.c`:
+```
+#include<stdio.h>
+
+int var = 5;
+
+void tong(int a, int b){
+    printf("Tong cua %d va %d la: %d", a, b, a+b);
+}
+```
+File `main.c`:
+```
+#include<stdio.h>
+
+extern int var;
+
+extern void tong(int a, int b);
+
+int main(){
+    printf("var: %d\n", var);
+    tong(3,7);
+    return 0;
+}
+```
+## 4.2 Static
+### 4.2.1 Static local
+- Biến Static cục bộ được khai báo trong 1 hàm.
+- Chỉ khởi tạo 1 lần duy nhất.
+- Giữ giá trị của biến qua các lần gọi hàm.
+- Được sử dụng hết vòng đời của chương trình.
+```
+#include<stdio.h>
+
+void func(){
+	static int count = 0; // Biến static giữ giá trị qua các lần gọi hàm
+	count++;
+	printf("Count: %d\n", count);
+}
+
+int main(){
+	func(); // Count: 1
+	func(); // Count: 2
+	func(); // Count: 3
+
+	return 0;
+}
+```
+### 4.2.2 Static global
+- Biến Static toàn cục được khai báo bên ngoài hàm.
+- Hạn chế phạm vi chỉ được sử dụng trong file nguồn hiện tại.
+- Không thể gọi ra và sử dụng trong file khác, kể cả khi dùng `extern`.
+
+## 4.3 Volatile
+- Từ khóa `volatile` được sử dụng để báo hiệu cho trình biên dịch rằng một biến có thể thay đổi ngẫu nhiên, ngoài sự kiểm soát của chương trình. 
+- Việc này ngăn chặn trình biên dịch tối ưu hóa hoặc xóa bỏ các thao tác trên biến đó, giữ cho các thao tác trên biến được thực hiện như đã được định nghĩa.
+
+## 4.4 Register
+Từ khóa `register` để cho một biến được sử dụng thường xuyên và có thể được lưu trữ trong một thanh ghi máy tính thay vì được lưu vào trong bộ nhớ RAM, nhằm tăng tốc độ truy cập.
+
+Ví dụ:
+```
+#include <stdio.h>
+#include <time.h>
+
+int main() {
+    // Lưu thời điểm bắt đầu
+    clock_t start_time = clock();
+    int i;
+
+    // Đoạn mã của chương trình
+    for (i = 0; i < 2000000; ++i) {
+        // Thực hiện một số công việc bất kỳ
+    }
+
+    // Lưu thời điểm kết thúc
+    clock_t end_time = clock();
+
+    // Tính thời gian chạy bằng miligiây
+    double time_taken = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Thoi gian chay cua chuong trinh: %f giay\n", time_taken);
+
+    return 0;
+}
+```
+Kết quả:
+```
+Thoi gian chay cua chuong trinh: 0.003000 giay
+```
+Nhưng khi sử dụng `register int i`:
+```
+Thoi gian chay cua chuong trinh: 0.001000 giay
+```
+
 # BÀI 5: GOTO - SETJMP
 ## 5.1 Goto
 **goto** là một từ khóa trong ngôn ngữ lập trình C, cho phép chương trình nhảy đến một nhãn (label) đã được đặt trước đó trong cùng một hàm. 
@@ -335,11 +436,96 @@ int main(){
 }
 ```
 
+# BÀI 6: BITMASK
+- **Bitmask** là một kỹ thuật sử dụng các bit để lưu trữ và thao tác với các cờ (flags) hoặc trạng thái. Có thể sử dụng bitmask để đặt, xóa và kiểm tra trạng thái của các bit cụ thể trong một từ (word).
+- **Bitmask** thường được sử dụng để tối ưu hóa bộ nhớ, thực hiện các phép toán logic trên một cụm bit, và quản lý các trạng thái, quyền truy cập, hoặc các thuộc tính khác của một đối tượng.
+## 6.1 NOT bitwise
+Dùng để thực hiện phép **NOT bitwise** trên từng bit của một số. Kết quả là bit đảo ngược của số đó.
+```
+int result = ~num;
+
+~ 0 = 1
+~ 1 = 0
+```
+## 6.2 AND bitwise
+Dùng để thực hiện phép **AND bitwise** giữa từng cặp bit của hai số. Kết quả là 1 nếu cả hai bit tương ứng đều là 1, ngược lại là 0.
+```
+int result = num1 & num2;
+
+0 & 0 = 0
+0 & 1 = 0
+1 & 0 = 0
+1 & 1 = 1
+```
+## 6.3 OR bitwise
+Dùng để thực hiện phép **OR bitwise** giữa từng cặp bit của hai số. Kết quả là 1 nếu có hơn một bit tương ứng là 1.
+```
+int result = num1 | num2;
+
+0 | 0 = 0
+0 | 1 = 1				
+1 | 0 = 1
+1 | 1 = 1
+```
+## 6.4 XOR bitwise
+Dùng để thực hiện phép **XOR bitwise** giữa từng cặp bit của hai số. Kết quả là 1 nếu chỉ có một bit tương ứng là 1.
+```
+int result = num1 ^ num2;
+
+0 ^ 0 = 0
+0 ^ 1 = 1			
+1 ^ 0 = 1
+1 ^ 1 = 0
+```
+## 6.5 Shift left bitwise 
+Dùng để di chuyển bit sang trái, các bit ở bên phải sẽ được dịch sang trái, và các bit trái cùng sẽ được đặt giá trị 0.
+```
+int resultLeftShift = num << shiftAmount;
+```
+## 6.6 Shift right bitwise
+Dùng để di chuyển bit sang phải, các bit ở bên trái sẽ được dịch sang phải, và các bit phải cùng sẽ được đặt giá trị 0 hoặc 1 tùy thuộc vào giá trị của bit cao nhất (bit dấu).
+```
+int resultRightShift = num >> shiftAmount;
+```
+
+Ví dụ:
+```
+#include <stdio.h>
+#include <stdint.h>
+
+#define ENABLE 1
+#define DISABLE 0
+
+typedef struct {
+    uint8_t LED1 : 1;	// LED1 sử dụng 1 bit
+    uint8_t LED2 : 1;	// LED2 sử dụng 1 bit
+    uint8_t LED3 : 1;	// LED3 sử dụng 1 bit
+    uint8_t LED4 : 1;	// LED4 sử dụng 1 bit
+    uint8_t LED5 : 1;	// LED5 sử dụng 1 bit
+    uint8_t LED6 : 1;	// LED6 sử dụng 1 bit
+    uint8_t LED7 : 1;	// LED7 sử dụng 1 bit
+    uint8_t LED8 : 1;	// LED8 sử dụng 1 bit
+} LEDStatus;
+void displayAllStatusLed(LEDStatus status) {
+ 	uint8_t* statusPtr = (uint8_t*)&status;
+		for (int j = 0; j < 8; j++) {
+		printf("LED%d: %d\n", j+1, (*statusPtr >> j) & 1);
+}
+
+}
 
 
+int main() {
+    LEDStatus ledStatus = {.LED7 = ENABLE};
 
-
-
+    // Bật LED 1 và 3
+    ledStatus.LED1 = ENABLE;
+    ledStatus.LED3 = ENABLE;
+    displayAllStatusLed(ledStatus);
+	
+    return 0;
+}
+```
 
 
 
