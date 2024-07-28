@@ -61,10 +61,10 @@ int main(){
 	
 	printf("Dia chi array: %p\n", array);
 	printf("Dia chi array: %p\n", ptr);
-    printf("Dia chi array: %p\n", &array[0]);	// Giá trị của array cũng chính là địa chỉ của phần tử đầu tiên trong mảng
+	printf("Dia chi array: %p\n", &array[0]);	// Giá trị của array cũng chính là địa chỉ của phần tử đầu tiên trong mảng
 
-    for(int i = 0; i<5; i++){
-        printf("Gia tri cua phan tu thu %d la: %d\n", i+1, *(ptr+i));
+	for(int i = 0; i<5; i++){
+	printf("Gia tri cua phan tu thu %d la: %d\n", i+1, *(ptr+i));
     }
     return 0;
 }
