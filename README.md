@@ -203,7 +203,7 @@ int main(){
 
     printf("value: %d\n", *ptr);
 
-    // ptr = &test; // Lỗi vì hằng con trỏ ptr đã trỏ tới biến value nên không thẻ trỏ tới biến test 
+    // ptr = &test; // Lỗi vì hằng con trỏ ptr đã trỏ tới biến value nên không thể trỏ tới biến test 
     return 0;
 }
 ```
