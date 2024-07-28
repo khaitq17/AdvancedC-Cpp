@@ -18,8 +18,8 @@ int b = *ptr;  // b bằng giá trị mà ptr trỏ đến
 #include <stdio.h>
 
 int main() {
-    int *ptr;
-    printf("Size of pointer: %d bytes\n", sizeof(ptr));
+	int *ptr;
+	printf("Size of pointer: %d bytes\n", sizeof(ptr));
     return 0;
 }
 ```
@@ -31,20 +31,20 @@ Và kích thước của con trỏ sẽ KHÔNG phụ thuộc vào kiểu dữ li
 #include <stdio.h>
 void swap(int *a, int *b)  
 {
-    int tmp = *a;
+	int tmp = *a;
     *a = *b;
     *b = tmp;
 }
 
 int main()
 {
-   int a = 10, b = 20;
-   swap(&a, &b);
+	int a = 10, b = 20;
+	swap(&a, &b);
 
-   printf("value a is: %d\n", a);	//value a is: 20
-   printf("value b is: %d\n", b);	//value b is: 10
+	printf("value a is: %d\n", a);	//value a is: 20
+	printf("value b is: %d\n", b);	//value b is: 10
 
-    return 0;
+	return 0;
 }
 ```
 - Ví dụ:
@@ -64,8 +64,8 @@ int main(){
 	printf("Dia chi array: %p\n", &array[0]);	// Giá trị của array cũng chính là địa chỉ của phần tử đầu tiên trong mảng
 
 	for(int i = 0; i<5; i++){
-	printf("Gia tri cua phan tu thu %d la: %d\n", i+1, *(ptr+i));
-    }
+		printf("Gia tri cua phan tu thu %d la: %d\n", i+1, *(ptr+i));
+	}
     return 0;
 }
 ```
