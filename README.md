@@ -527,23 +527,222 @@ int main() {
 }
 ```
 
+# BÀI 7: STRUCT - UNION 
+## 7.1 Struct
+- **Struct** trong C là một kiểu dữ liệu tùy chỉnh, được sử dụng để lưu trữ các biến có kiểu dữ liệu khác nhau ở một đối tượng duy nhất. 
+- Một struct được định nghĩa bằng cách liệt kê tất cả các biến thành viên (member) bên trong nó, và mỗi biến thành viên có thể có một kiểu dữ liệu khác nhau.
+- Khai báo:
+```
+struct{
+	kieuDuLieu1 thanhVien1;
+	kieuDuLieu2 thanhVien2;
+	// ...
+} TenStruct;
+```
+- Ví dụ: Định nghĩa kiểu dữ liệu tên là SinhVien gồm các thành phần như họ tên (kiểu char), ID (kiểu int), điểm trung bình (kiểu float), ….
+```
+struct{
+	char ten[20];
+	int ID;
+	float diemTB;
+} SinhVien; 
+```
 
+- Xác định kích thước của Struct:
+Kích thước của Struct sẽ bằng tổng kích thước của các thành viên (members) của nó và kích thước của bộ nhớ đệm (padding) (nếu có)
 
+Ví dụ 1: 
+```
+#include<stdio.h>
+#include<stdint.h>
 
+struct{
+	uint8_t var1;	// 1 byte	
+	uint32_t var2;	// 4 byte
+	uint16_t var3;	// 2 byte
+} example;
 
+int main(){
+	printf("Size: %d byte", sizeof(example));
 
+	return 0;
+}
+```
+Kích thước của Struct phụ thuộc vào kích thước của kiểu dữ liệu lớn nhất của nó.
 
+![image](https://github.com/user-attachments/assets/ff85a52d-378f-4179-abb6-0792fc68d174)
 
+Kết quả:
+```
+Size: 12 byte
+```
+Khi sắp xếp lại thứ tự các biến trong Struct:
+```
+#include<stdio.h>
+#include<stdint.h>
 
+struct{
+	uint8_t var1;	// 1 byte	
+	uint16_t var3;	// 2 byte
+	uint32_t var2;	// 4 byte
+} example;
 
+int main(){
+	printf("Size: %d byte", sizeof(example));
 
+	return 0;
+}
+```
 
+![image](https://github.com/user-attachments/assets/9f9719cd-d7fa-4eb1-a3e0-76d0b6ce8a06)
 
+Kết quả:
+```
+Size: 8 byte
+```
+Vì vậy, trong 1 struct ta có thể sắp xếp thứ tự các biến thành viên một cách hợp lí để tối ưu bộ nhớ.
 
+Ví dụ 2:
+```
+#include<stdio.h>
+#include<stdint.h>
 
+struct{
+	uint8_t arr1[5];		
+	uint16_t arr2[4];	
+	uint32_t arr3[2];	
+} example;
 
+int main(){
+	printf("Size: %d byte", sizeof(example));
 
+	return 0;
+}
+```
+Với struct gồm các thành viên là các mảng thì thực chất có thể được hiểu như sau:
+```
+struct{
+	// uint8_t arr1[5];
+	uint8_t arr1_1;
+	uint8_t arr1_2;
+	uint8_t arr1_3;
+	uint8_t arr1_4;
+	uint8_t arr1_5;
 
+	// uint16_t arr2[4];
+	uint16_t arr2_1;
+	uint16_t arr2_2;
+	uint16_t arr2_3;
+	uint16_t arr2_4;
+
+	// uint32_t arr3[2];
+	uint32_t arr3_1;
+	uint32_t arr3_2;	
+} example;
+```
+![image](https://github.com/user-attachments/assets/7111ee2f-7965-41e6-a7be-1f69688b321e)
+Kết quả:
+```
+Size: 24 byte
+```
+
+## 7.2 Union
+- **Union** cũng là kiểu dữ liệu mà người dùng tự định nghĩa tương tự như struct, Union cũng có các thành phần dữ liệu để mô tả thông tin của đối tượng muốn lưu trữ.
+- Nếu với Struct thì các thành phần của nó có thể lưu trữ giá trị đồng thời tại cùng một thời điểm còn Union thì tại mỗi thời điểm chỉ có một thành viên của Union có thể được sử dụng.
+- Tất cả các thành phần của Union sẽ chia sẻ chung 1 vùng nhớ.
+- Khai báo:
+```
+union{
+	kieuDuLieu1 thanhVien1;
+	kieuDuLieu2 thanhVien2;
+	// ...
+} TenUnion;
+```
+
+Ví dụ 1:
+```
+#include<stdio.h>
+#include<stdint.h>
+
+union{
+	uint8_t var1;
+	uint16_t var2;
+	uint32_t var3;
+} Data;
+
+int main(){
+	printf("Size: %d byte", sizeof(example));
+
+	return 0;
+}
+```
+Kích thước của Union chính là kích thước của thành viên có kích thước lớn nhất của nó.
+Kết quả:
+```
+Size: 4 byte
+```
+Vì các thành viên của Union chia sẻ chung 1 vùng nhớ nên khi gọi 1 thành viên thì vùng nhớ sẽ như sau:
+
+![image](https://github.com/user-attachments/assets/d2fffe3f-a2ef-423c-9cc5-d9633e9659ef)
+
+Ví dụ 2:
+```
+#include<stdio.h>
+#include<stdint.h>
+
+union{
+	uint8_t arr1[5];	// 5 byte
+	uint16_t arr2[9];	// 18 byte
+	uint32_t arr3[3];	// 12 byte
+} Data;
+
+int main(){
+	printf("Size: %d byte", sizeof(example));
+
+	return 0;
+}
+```
+Tương tự Struct thì kích thước của Union cũng phụ thuộc vào kích thước của kiểu dữ liệu lớn nhất trong nó. 
+
+Trong ví dụ này khi quét nó sẽ quét 4 byte một lần. Và member `arr2[9]` có kích thước lớn nhất với 18 byte kích thước của nó và 2 byte padding.
+
+Vì vậy, kích thước của Union sẽ là 20 byte.
+Kết quả:
+```
+Size: 20 byte
+```
+
+## 7.3 Ứng dụng kết hợp của Struct và Union
+```
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+
+typedef union {
+    struct {
+        uint8_t id[2];
+        uint8_t data[4];
+        uint8_t check_sum[2];
+    } data;
+
+    uint8_t frame[8];
+
+} Data_Frame;
+
+int main()
+{
+    Data_Frame transmitter_data;
+    
+    strcpy(transmitter_data.data.id, "10");
+    strcpy(transmitter_data.data.data, "1234");
+    strcpy(transmitter_data.data.check_sum, "70");
+
+	Data_Frame receiver_data;
+    strcpy(receiver_data.frame, transmitter_data.frame);
+	
+    return 0;
+}
+```
 
 
 
