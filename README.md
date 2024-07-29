@@ -672,6 +672,7 @@ struct{
 } example;
 ```
 ![image](https://github.com/user-attachments/assets/7111ee2f-7965-41e6-a7be-1f69688b321e)
+
 Kết quả:
 ```
 Size: 24 byte
