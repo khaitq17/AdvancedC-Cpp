@@ -1,6 +1,5 @@
 # BÀI 3: POINTER
 Con trỏ (Pointer) là một biến chứa địa chỉ bộ nhớ của một biến khác. Việc sử dụng con trỏ giúp chúng ta thực hiện các thao tác trên bộ nhớ một cách linh hoạt hơn.
-
 - Khai báo:
 ```
 int *ptr;  // Con trỏ trỏ đến kiểu int 
@@ -20,20 +19,19 @@ int b = *ptr;  // b bằng giá trị mà ptr trỏ đến
 int main() {
 	int *ptr;
 	printf("Size of pointer: %d bytes\n", sizeof(ptr));
-    return 0;
+	return 0;
 }
 ```
-Kích thước của con trỏ là **4 bytes** với hệ thống **32-bit** hoặc **8 bytes** với hệ thống **64-bit**.
-Và kích thước của con trỏ sẽ KHÔNG phụ thuộc vào kiểu dữ liệu mà nó trỏ đến.
-
-- Ví dụ:
+- Kích thước của con trỏ là **4 bytes** với hệ thống **32-bit** hoặc **8 bytes** với hệ thống **64-bit**.
+- Và kích thước của con trỏ sẽ KHÔNG phụ thuộc vào kiểu dữ liệu mà nó trỏ đến.
+Ví dụ:
 ```
 #include <stdio.h>
 void swap(int *a, int *b)  
 {
 	int tmp = *a;
-    *a = *b;
-    *b = tmp;
+	*a = *b;
+	*b = tmp;
 }
 
 int main()
@@ -47,7 +45,7 @@ int main()
 	return 0;
 }
 ```
-- Ví dụ:
+Ví dụ:
 ```
 #include <stdio.h>
 int main(){
@@ -71,12 +69,11 @@ int main(){
 ```
 ## 3.1 Void Pointer
 **Void Pointer** thường dùng để trỏ để tới bất kỳ địa chỉ nào mà không cần biết tới kiểu dữ liệu của giá trị tại địa chỉ đó.
-
 - Khai báo:
 ```
 void *ptr;
 ```
-- Ví dụ:
+Ví dụ:
 ```
 include <stdio.h>
 #include <stdlib.h>
@@ -105,7 +102,7 @@ int main() {
 **Function Pointer** (con trỏ hàm) là một biến mà giữ địa chỉ của một hàm, nó trỏ đến vùng nhớ trong bộ nhớ chứa mã máy của hàm được định nghĩa trong chương trình.
 Trong ngôn ngữ lập trình C, con trỏ hàm cho phép truyền một hàm như là một đối số cho một hàm khác, lưu trữ địa chỉ của hàm trong một cấu trúc dữ liệu, hoặc thậm chí truyền hàm như một giá trị trả về từ một hàm khác.
 
-- Ví dụ:
+Ví dụ:
 ```
 #include <stdio.h>
 
@@ -123,7 +120,7 @@ void multiplication(int a, int b){
 
 void division(int a, int b){
     if(b == 0){
-        printf("Phep chia khong hop le vi mau so bang 0");
+        printf("Phep chia khong hop le vi mau so bang 0!");
     }
     else{printf("Thuong cua %d va %d la: %.2f\n", a, b, a/(double)b);}
 }
@@ -158,13 +155,12 @@ int main(){
 
 ## 3.3 Pointer to Constant
 **Pointer to Constant** (Con trỏ hằng) là cách định nghĩa một con trỏ không thể thay đổi giá trị tại địa chỉ mà nó trỏ đến thông qua dereference nhưng giá trị tại địa chỉ đó có thể thay đổi.
-
 - Khai báo:
 ```
 int const *ptr;
 const int *ptr;
 ```
-- Ví dụ:
+Ví dụ:
 ```
 #include<stdio.h>
 
@@ -186,13 +182,12 @@ int main(){
 
 ## 3.4 Constant Pointer
 **Constant Pointer** (Hằng con trỏ) định nghĩa một con trỏ mà giá trị nó trỏ đến (địa chỉ) không thể thay đổi, tức là khi con trỏ này được khởi tạo thì nó sẽ không thể trỏ tới địa chỉ khác.
-
 - Khai báo:
 ```
 int *const ptr = &value;
 ```
 
-- Ví dụ:
+Ví dụ:
 ```
 #include<stdio.h>
 
@@ -211,10 +206,35 @@ int main(){
 ## 3.5 NULL Pointer
 **Null Pointer** là một con trỏ không trỏ đến bất kỳ đối tượng hoặc vùng nhớ cụ thể nào. Trong ngôn ngữ lập trình C, một con trỏ có thể được gán giá trị NULL để biểu diễn trạng thái null.
 
-Sử dụng null pointer thường hữu ích để kiểm tra xem một con trỏ đã được khởi tạo và có trỏ đến một vùng nhớ hợp lệ chưa. Tránh dereferencing (sử dụng giá trị mà con trỏ trỏ đến) một null pointer là quan trọng để tránh lỗi chương trình.
+Sử dụng NULL Pointer thường hữu ích để kiểm tra xem một con trỏ đã được khởi tạo và có trỏ đến một vùng nhớ hợp lệ chưa. Tránh dereferencing (sử dụng giá trị mà con trỏ trỏ đến) một NULL Pointer là quan trọng để tránh lỗi chương trình.
 
+Ví dụ:
+```
+#include <stdio.h>
+
+int main() {
+    int *ptr = NULL;  // Gán giá trị NULL cho con trỏ 0x0000000
+
+    if (ptr == NULL) {
+        printf("Pointer is NULL\n");
+    } else {
+        printf("Pointer is not NULL\n");
+    }
+
+    int score_game = 5;
+    if (ptr == NULL)
+    {
+        ptr = &score_game;
+        *ptr = 30;
+        ptr = NULL;
+    }
+    
+    return 0;
+}
+```
 Khi khai báo và sử dụng xong con trỏ, không dùng nữa thì gán con trỏ đó thành con trỏ NULL.
 
+Ví dụ:
 ```
 #include<stdio.h>
 
@@ -232,7 +252,8 @@ int main(){
 **Pointer to Pointer** (Con trỏ đến con trỏ) là một kiểu dữ liệu trong ngôn ngữ lập trình cho phép bạn lưu trữ địa chỉ của một con trỏ. 
 
 Con trỏ đến con trỏ cung cấp một cấp bậc trỏ mới, cho phép thay đổi giá trị của con trỏ gốc. Cấp bậc này có thể hữu ích trong nhiều tình huống, đặc biệt là khi làm việc với các hàm cần thay đổi giá trị của con trỏ.
-- Ví dụ:
+
+Ví dụ:
 ```
 #include<stdio.h>
 
@@ -255,7 +276,7 @@ int main(){
 	return 0;
 }
 ```
-- Kết quả:
+Kết quả:
   
 ![image](https://github.com/user-attachments/assets/12987b23-bf07-46b8-8515-8a86eed5ddf4)
 
@@ -287,6 +308,7 @@ extern void tong(int a, int b);
 int main(){
     printf("var: %d\n", var);
     tong(3,7);
+
     return 0;
 }
 ```
@@ -296,6 +318,7 @@ int main(){
 - Chỉ khởi tạo 1 lần duy nhất.
 - Giữ giá trị của biến qua các lần gọi hàm.
 - Được sử dụng hết vòng đời của chương trình.
+Ví dụ:
 ```
 #include<stdio.h>
 
@@ -362,12 +385,11 @@ Thoi gian chay cua chuong trinh: 0.001000 giay
 
 # BÀI 5: GOTO - SETJMP
 ## 5.1 Goto
-**goto** là một từ khóa trong ngôn ngữ lập trình C, cho phép chương trình nhảy đến một nhãn (label) đã được đặt trước đó trong cùng một hàm. 
-
-Mặc dù nó cung cấp khả năng kiểm soát flow của chương trình, nhưng việc sử dụng goto thường được xem là không tốt vì nó có thể làm cho mã nguồn trở nên khó đọc và khó bảo trì.
-
-Lệnh goto chỉ dùng cục bộ trong hàm.
-- Ví dụ:
+- **goto** là một từ khóa trong ngôn ngữ lập trình C, cho phép chương trình nhảy đến một nhãn (label) đã được đặt trước đó trong cùng một hàm. 
+- Mặc dù nó cung cấp khả năng kiểm soát flow của chương trình, nhưng việc sử dụng `goto` thường được xem là không tốt vì nó có thể làm cho mã nguồn trở nên khó đọc và khó bảo trì.
+- Trong 1 chương trình sử dụng nhiều vòng lặp lồng vòng lặp thì việc sử dụng `goto` sẽ tránh phải dùng lệnh `break;` nhiều lần.
+- Lệnh `goto` chỉ dùng cục bộ trong hàm.
+Ví dụ:
 ```
 #include<stdio.h>
 
@@ -386,12 +408,20 @@ int main(){
 
 	// Đặt nhãn end
     end:
-    printf("\n");
+    printf("Ket thuc!\n");
 
     return 0;
 }
 ```
-
+Kết quả:
+```
+0
+1
+2
+3
+4
+Ket thuc!
+```
 ## 5.2 Thư viện setjmp.h
 **setjmp.h** là một thư viện trong ngôn ngữ lập trình C, cung cấp hai hàm chính là **setjmp()** và **longjmp()**. 
 
@@ -402,6 +432,7 @@ Cả hai hàm này thường được sử dụng để thực hiện xử lý n
 jmp_buf buffer;	// Biến toàn cục
 ```
 - **int set_jmp(BUF)**: Nếu macro này trả về một cách trực tiếp từ lời gọi macro, thì nó trả về 0; nhưng nếu nó trả về từ một lời gọi hàm **longjmp()**, thì một giá trị khác 0 được trả về.
+Ví dụ:
 ```
 #include<stdio.h>
 #include<setjmp.h>
@@ -437,8 +468,9 @@ int main(){
 ```
 
 # BÀI 6: BITMASK
-- **Bitmask** là một kỹ thuật sử dụng các bit để lưu trữ và thao tác với các cờ (flags) hoặc trạng thái. Có thể sử dụng bitmask để đặt, xóa và kiểm tra trạng thái của các bit cụ thể trong một từ (word).
-- **Bitmask** thường được sử dụng để tối ưu hóa bộ nhớ, thực hiện các phép toán logic trên một cụm bit, và quản lý các trạng thái, quyền truy cập, hoặc các thuộc tính khác của một đối tượng.
+**Bitmask** là một kỹ thuật sử dụng các bit để lưu trữ và thao tác với các cờ (flags) hoặc trạng thái. Có thể sử dụng bitmask để đặt, xóa và kiểm tra trạng thái của các bit cụ thể trong một từ (word).
+
+**Bitmask** thường được sử dụng để tối ưu hóa bộ nhớ, thực hiện các phép toán logic trên một cụm bit, và quản lý các trạng thái, quyền truy cập, hoặc các thuộc tính khác của một đối tượng.
 ## 6.1 NOT bitwise
 Dùng để thực hiện phép **NOT bitwise** trên từng bit của một số. Kết quả là bit đảo ngược của số đó.
 ```
@@ -529,7 +561,7 @@ int main() {
 
 # BÀI 7: STRUCT - UNION 
 ## 7.1 Struct
-- **Struct** trong C là một kiểu dữ liệu tùy chỉnh, được sử dụng để lưu trữ các biến có kiểu dữ liệu khác nhau ở một đối tượng duy nhất. 
+**Struct** trong C là một kiểu dữ liệu tùy chỉnh, được sử dụng để lưu trữ các biến có kiểu dữ liệu khác nhau ở một đối tượng duy nhất. 
 - Một struct được định nghĩa bằng cách liệt kê tất cả các biến thành viên (member) bên trong nó, và mỗi biến thành viên có thể có một kiểu dữ liệu khác nhau.
 - Khai báo:
 ```
@@ -539,7 +571,7 @@ struct{
 	// ...
 } TenStruct;
 ```
-- Ví dụ: Định nghĩa kiểu dữ liệu tên là SinhVien gồm các thành phần như họ tên (kiểu char), ID (kiểu int), điểm trung bình (kiểu float), ….
+Ví dụ: Định nghĩa kiểu dữ liệu tên là SinhVien gồm các thành phần như họ tên (kiểu char), ID (kiểu int), điểm trung bình (kiểu float), ….
 ```
 struct{
 	char ten[20];
@@ -547,11 +579,10 @@ struct{
 	float diemTB;
 } SinhVien; 
 ```
-
 - Xác định kích thước của Struct:
 Kích thước của Struct sẽ bằng tổng kích thước của các thành viên (members) của nó và kích thước của bộ nhớ đệm (padding) (nếu có)
 
-Ví dụ 1: 
+Ví dụ: 
 ```
 #include<stdio.h>
 #include<stdint.h>
@@ -602,7 +633,7 @@ Size: 8 byte
 ```
 Vì vậy, trong 1 struct ta có thể sắp xếp thứ tự các biến thành viên một cách hợp lí để tối ưu bộ nhớ.
 
-Ví dụ 2:
+Ví dụ:
 ```
 #include<stdio.h>
 #include<stdint.h>
@@ -647,7 +678,7 @@ Size: 24 byte
 ```
 
 ## 7.2 Union
-- **Union** cũng là kiểu dữ liệu mà người dùng tự định nghĩa tương tự như struct, Union cũng có các thành phần dữ liệu để mô tả thông tin của đối tượng muốn lưu trữ.
+**Union** cũng là kiểu dữ liệu mà người dùng tự định nghĩa tương tự như struct, Union cũng có các thành phần dữ liệu để mô tả thông tin của đối tượng muốn lưu trữ.
 - Nếu với Struct thì các thành phần của nó có thể lưu trữ giá trị đồng thời tại cùng một thời điểm còn Union thì tại mỗi thời điểm chỉ có một thành viên của Union có thể được sử dụng.
 - Tất cả các thành phần của Union sẽ chia sẻ chung 1 vùng nhớ.
 - Khai báo:
@@ -659,7 +690,7 @@ union{
 } TenUnion;
 ```
 
-Ví dụ 1:
+Ví dụ:
 ```
 #include<stdio.h>
 #include<stdint.h>
@@ -685,7 +716,7 @@ Vì các thành viên của Union chia sẻ chung 1 vùng nhớ nên khi gọi 1
 
 ![image](https://github.com/user-attachments/assets/d2fffe3f-a2ef-423c-9cc5-d9633e9659ef)
 
-Ví dụ 2:
+Ví dụ:
 ```
 #include<stdio.h>
 #include<stdint.h>
