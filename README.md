@@ -776,10 +776,119 @@ int main()
 }
 ```
 
+# BÀI 8: MEMORY LAYOUT
+Chương trình main.exe (trên window), main.hex (nạp vào vi điều khiển) được lưu ở bộ nhớ SSD hoặc FLASH. Khi nhấn run chương trình trên Window (cấp nguồn cho vi điều khiển) thì những chương trình này sẽ được copy vào bộ nhớ RAM để thực thi.
+![image](https://github.com/user-attachments/assets/e84b6278-6b83-4f30-9d88-9a7878eead10)
 
+## 8.1 Text Segment
+- Chứa tập hợp các lệnh thực thi.
+- Quyền truy cập: Text Segment thường có quyền đọc và thực thi, nhưng không có quyền ghi. 
+- Lưu hằng số, con trỏ kiểu char.
+- Tất cả các biến lưu ở phân vùng Text đều không thể thay đổi giá trị mà chỉ được đọc.
 
+![image](https://github.com/user-attachments/assets/3e570e02-9bb4-4273-8523-8699b5e40531)
 
+Ví dụ:
+```
+#include<stdio.h>
+#include<string.h>
 
+const int a = 5;	// Phân vùng Text
+
+char *ptr = "Hello World!";		// Phân vùng Text
+
+int main(){
+	a = 10; 	// Lỗi không thể thay đổi được hằng số
+    printf("a = %d\n", a);	
+
+    *ptr = 'K';		// Lỗi không thể thay đổi con trỏ kiểu char
+    printf("%s\n", ptr);	
+
+    return 0;
+}
+```
+## 8.2 Data Segment
+**Initialized Data Segment** (Dữ liệu đã khởi tạo):
+- Chứa các biến toàn cục được khởi tạo với giá trị khác 0.
+- Chứa các biến static được khởi tạo với giá trị khác 0.
+- Quyền truy cập là đọc và ghi, tức là có thể đọc và thay đổi giá trị của biến.
+- Tất cả các biến sẽ được thu hồi sau khi chương trình kết thúc.
+
+![image](https://github.com/user-attachments/assets/43b01e88-f724-4e13-bdf7-7e9875fde4e0)
+
+Ví dụ:
+```
+#include<stdio.h>
+/*
+Các biến phân vùng Data
+
+int a = 5; 	// Biến toàn cục được khởi tạo khác 0       
+
+static int b = 10; 	// Biến static toàn cục được khởi tạo khác 0
+
+void test(){
+    static int x = 3;	// Biến static cục bộ được khởi tạo khác 0
+}
+*/
+
+int main(){
+
+    return 0;
+}
+// Sau khi kết thúc chương trình các biến phân vùng Data sẽ được thu hồi 
+```
+## 8.3 BSS Segment
+**Uninitialized Data Segment** (Dữ liệu Chưa Khởi Tạo):
+- Chứa các biến toàn cục khởi tạo với giá trị bằng 0 hoặc không gán giá trị.
+- Chứa các biến static với giá trị khởi tạo bằng 0 hoặc không gán giá trị.
+- Quyền truy cập là đọc và ghi, tức là có thể đọc và thay đổi giá trị của biến.
+- Tất cả các biến sẽ được thu hồi sau khi chương trình kết thúc.
+
+![image](https://github.com/user-attachments/assets/5d1eb88e-fba4-4129-913f-52d8323d3bb6)
+
+Ví dụ:
+```
+#include<stdio.h>
+/*
+Các biến phân vùng BSS
+
+int a = 0;	// Biến toàn cục khởi tạo với giá trị bằng 0  
+
+static int b;	// Biến static không khởi tạo giá trị ban đầu
+*/
+
+int main(){
+	a = 10; // Khi gán giá trị a = 10 thì biến a vẫn nằm trong phân vùng BSS chứ không chuyển sang phân vùng Data.
+
+    return 0;
+}
+```
+## 8.4 Stack
+- Chứa các biến cục bộ, tham số truyền vào.
+- Quyền truy cập: đọc và ghi, nghĩa là có thể đọc và thay đổi giá trị của biến trong suốt thời gian chương trình chạy.
+- Sau khi ra khỏi hàm, sẽ thu hồi vùng nhớ.
+
+![image](https://github.com/user-attachments/assets/23e16469-2639-4ffc-86bd-386b75a47584)
+
+Ví dụ:
+```
+#include<stdio.h>
+
+int tong(int a, int b){
+	const int x = 10;	// Biến cục bộ là hằng số nhưng vẫn được lưu ở phân vùng Stack và chỉ có quyền đọc.
+    int c;		// Các biến cục bộ a, b, c được lưu ở phân vùng Stack 
+    c = a + b;
+    return c;
+}
+
+int main(){
+    tong(3, 5);
+	// Sau khi kết thúc hàm thì các biến phân vùng Stack sẽ bị thu hồi vùng nhớ.
+
+    return 0;
+}
+```
+## 8.5 Heap
 
 
 
