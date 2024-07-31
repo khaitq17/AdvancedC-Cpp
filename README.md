@@ -889,6 +889,111 @@ int main(){
 }
 ```
 ## 8.5 Heap
+Cấp phát động:
+- Heap được sử dụng để cấp phát bộ nhớ động trong quá trình thực thi của chương trình.
+- Điều này cho phép chương trình tạo ra và giải phóng bộ nhớ theo nhu cầu, thích ứng với sự biến đổi của dữ liệu trong quá trình chạy.
+- Các hàm như malloc(), calloc(), realloc(), và free() được sử dụng để cấp phát và giải phóng bộ nhớ trên heap.
+
+![image](https://github.com/user-attachments/assets/ddcb9a31-2ad6-4743-afbb-dfd686b066ce)
+
+Ví dụ:
+```
+#include<stdio.h>
+#include<stdint.h>
+#include<stdlib.h>
+
+
+int main(){
+    uint16_t *ptr = NULL;
+    ptr = (uint16_t*)malloc(sizeof(uint16_t) * 6);  // Cấp phát động 1 mảng có kích thước 2 * 6 = 12 byte
+
+    for (int i = 0; i < 6; i++)
+    {
+        ptr[i] = i + 1;
+    }
+    
+    for (int i = 0; i < 6; i++)
+    {
+        printf("%d\n", ptr[i]);
+    }
+
+    ptr = (uint16_t*)realloc(ptr, sizeof(uint16_t) * 10);  // Cấp phát động lại mảng với kích thước mới 2 * 10 = 20 byte
+
+    ptr[10] = 17;	// Ô nhớ chưa được cấp phát động nên biến a có thể truy cập đến và sử dụng
+    int a;	// Các ô nhớ được cấp phát động thì biến a không thể truy cập đến
+
+    for (int i = 0; i < 10; i++)
+    {
+        ptr[i] = i + 1;
+    }
+    
+    for (int i = 0; i < 11; i++)
+    {
+        printf("%d\n", ptr[i]);
+    }
+
+    free(ptr);	// Thu hồi vùng nhớ để tránh tràn bộ nhớ
+
+    return 0;
+}
+```
+## 8.6 Hàm malloc() và calloc()
+### 8.6.1 Hàm malloc()
+Hàm **malloc()** là viết tắt của từ **memory allocation** tức là cấp phát động vùng nhớ, hàm này được sử dụng để xin cấp phát khối bộ nhớ theo kích thước byte mong muốn. 
+
+Giá trị trả về của hàm là một con trỏ kiểu void, nên ép kiểu sang kiểu dữ liệu cần dùng. 
+
+Các giá trị trong các ô nhớ được cấp phát là giá trị rác.
+
+Cú pháp: `ptr = (cast_type*)malloc(byte_size)`
+
+Trong đó : 
+
+- `ptr` là con trỏ lưu trữ ô nhớ đầu tiên của vùng nhớ được cấp phát
+- `cast_type*` là kiểu con trỏ muốn ép kiểu sang
+- `byte_size` là kích thước theo byte muốn cấp phát
+### 8.6.2 Hàm calloc()
+Hàm **calloc()** viết tắt của **contiguous allocation**, tương tự như **malloc()** sử dụng để cấp phát vùng nhớ động nhưng các giá trị của các vùng nhớ được cấp phát sẽ có giá trị mặc định là 0.
+
+Cú pháp : `ptr = (cast_type*) calloc(n, element_size)`
+
+Trong đó : 
+
+- `ptr` là con trỏ lưu trữ ô nhớ đầu tiên của vùng nhớ được cấp phát
+- `cast_type*` là kiểu con trỏ muốn ép kiểu sang
+- `n` là số lượng phần tử muốn cấp phát
+- `element_size` là kích thước theo byte của 1 phần tử
+### 8.6.3 So sánh malloc() và calloc()
+|**malloc**|**calloc()**|
+|:---------|:-----------|
+|Tạo một khối bộ nhớ có kích thước do người dùng chỉ định.|Có thể gán nhiều khối bộ nhớ cho một biến.|
+|Chứa giá trị rác.|Khối bộ nhớ được cấp phát luôn được khởi tạo bằng 0.|
+|Số lượng input là 1.|Số lượng input là 2.|
+|Nhanh hơn calloc().|Chậm hơn malloc().|
+|Không an toàn so với calloc().|An toàn để sử dụng so với malloc().|
+|Hiệu quả về thời gian cao hơn calloc().|Hiệu quả về thời gian thấp hơn malloc().|
+|Chỉ trả về địa chỉ bắt đầu và không biến nó thành 0.|Trả về địa chỉ bắt đầu và biến nó thành 0 trước khi cấp phát địa chỉ.|
+|Không thực hiện khởi tạo bộ nhớ.|Thực hiện khởi tạo bộ nhớ.|
+
+- Trường hợp nên sử dụng **malloc()**:
+	- Khi phải cấp phát bộ nhớ khi chạy.
+	- Khi phải phân bổ các đối tượng phải tồn tại ngoài việc thực thi khối bộ nhớ hiện tại.
+	- Nếu cần phân bổ bộ nhớ lớn hơn kích thước của ngăn xếp đó.
+- Trường hợp nên sử dụng **calloc()**:
+	- Khi phải đặt bộ nhớ được phân bổ về 0.
+	- Khi cần khởi tạo các phần tử về 0 để trả về một con trỏ vào bộ nhớ.
+	- Để tránh tràn có thể xảy ra với malloc().
+## 8.7 Stack và Heap
+|	| **Stack**   | **Heap**   | 
+|:-:|:------------|:-----------|
+|Đặc điểm|- Dùng để lưu trữ các biến cục bộ trong hàm, tham số truyền vào... Truy cập vào bộ nhớ này rất nhanh và được thực thi khi chương trình được biên dịch.<br>- Được quản lý bởi hệ điều hành, dữ liệu được lưu trong Stack sẽ tự động giải phóng khi hàm thực hiện xong công việc của mình.|- Dùng để lưu trữ vùng nhớ cho những biến được cấp phát động bởi các hàm malloc - calloc - realloc (trong C).<br>- Được quản lý bởi lập trình viên, dữ liệu trong Heap sẽ không bị hủy khi hàm thực hiện xong, vì vậy phải tự tay giải phóng vùng nhớ bằng câu lệnh free (trong C), và delete hoặc delete [] (trong C++), nếu không sẽ xảy ra hiện tượng rò rỉ bộ nhớ.| 
+|Kích thước vùng nhớ|Cố định, tùy thuộc vào hệ điều hành|Không cố định, có thể tăng giảm để đáp ứng được nhu cầu lưu trữ dữ liệu của chương trình.|
+|Lỗi xảy ra đối với vùng nhớ|Nếu chương trình bạn sử dụng quá nhiều bộ nhớ vượt quá khả năng lưu trữ của Stack chắc chắn sẽ xảy ra tình trạng tràn bộ nhớ Stack (Stack overflow), các trường hợp xảy ra như khởi tạo quá nhiều biến cục bộ, hàm đệ quy vô hạn,...|- Nếu liên tục cấp phát vùng nhớ mà không giải phóng thì sẽ bị lỗi tràn vùng nhớ Heap (Heap overflow).<br>- Nếu khởi tạo một vùng nhớ quá lớn mà vùng nhớ Heap không thể lưu trữ một lần được sẽ bị lỗi khởi tạo vùng nhớ Heap thất bại.|
+
+Sử dụng **Stack** nếu biết chính xác lượng dữ liệu phân bổ trước khi biên dịch và dữ liệu không quá lớn. Ngược lại, nên sử dụng **Heap**.
+
+
+
 
 
 
