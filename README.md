@@ -1001,12 +1001,12 @@ Ví dụ:
 1 Object JSON:
 ```
 {
-    "name" : "Nguyen Van A",	// value là string
-    "age" : 18,	// value là number
+    "name" : "Nguyen Van A",	// value là 1 string
+    "age" : 18,	// value là 1 number
     "address" : null,	// value là null
     "isStudent": true,	// value là boolean
-    "score" : [9, 10, 7],
-    "contact" : {
+    "score" : [9, 10, 7],	// value là 1 array
+    "contact" : {	// value là 1 object
         "email" : "nva@gmail.com",
         "phoneNumber" : "123456789"
     }
