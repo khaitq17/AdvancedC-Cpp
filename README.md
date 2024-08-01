@@ -992,6 +992,55 @@ Trong đó :
 
 Sử dụng **Stack** nếu biết chính xác lượng dữ liệu phân bổ trước khi biên dịch và dữ liệu không quá lớn. Ngược lại, nên sử dụng **Heap**.
 
+# BÀI 9: JSON
+- **JSON** là viết tắt của "JavaScript Object Notation" (Ghi chú về Đối tượng JavaScript). Đây là một định dạng truyền tải dữ liệu phổ biến trong lập trình và giao tiếp giữa các máy chủ và trình duyệt web, cũng như giữa các hệ thống khác nhau.
+
+- **JSON** được thiết kế để dễ đọc và dễ viết cho con người, cũng như dễ dàng để phân tích và tạo ra cho máy tính. Nó sử dụng một cú pháp nhẹ dựa trên cặp **key** - **value**, tương tự như các đối tượng và mảng trong JavaScript. Mỗi đối tượng JSON bao gồm một tập hợp các cặp "key" và "value", trong khi mỗi mảng JSON là một tập hợp các giá trị.
+
+Ví dụ: 
+1 Object JSON:
+```
+{
+    "name" : "Nguyen Van A",	// value là string
+    "age" : 18,	// value là number
+    "address" : null,	// value là null
+    "isStudent": true,	// value là boolean
+    "score" : [9, 10, 7],
+    "contact" : {
+        "email" : "nva@gmail.com",
+        "phoneNumber" : "123456789"
+    }
+}
+```
+Trong đó:
+- `"name" : "Nguyen Van A"` là 1 member
+- `"name"` là 1 key
+- `"Nguyen Van A"` là 1 value
+
+1 Object JSON mở đầu bằng "{" kết thúc bằng "}".
+
+Trong đó: 
+- *key* phải là 1 **string**, ngăn cách với *value* bởi dấu `:`
+- *value* có thể là:
+	- Null: Đại diện cho 1 giá trị không tồn tại hoặc không xác định
+ 	- Boolean: `true` hoặc `false`
+	- Number: Có thể là số nguyên (int) hoặc số thực (float, double),...
+	- String: Chuỗi ký tự 
+	- Array: Mảng có thể bao gồm nhiều kiểu dữ liệu
+	- Object: Đối tượng thuộc 1 *key* có cấu trúc như ví dụ trên
+- Mỗi member trong object ngăn cách nhau bằng dấu `,`
+```
+typedef enum{
+    JSON_NULL,
+    JSON_BOOLEAN,
+    JSON_NUMBER,
+    JSON_STRING,
+    JSON_ARRAY,
+    JSON_OBJECT
+} JsonType;
+```
+
+
 
 
 
