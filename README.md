@@ -1040,6 +1040,36 @@ typedef enum{
 } JsonType;
 ```
 
+# BÀI 10: LINKED LIST
+**Linked list** hay **danh sách liên kết** (DSLK) là một cấu trúc dữ liệu được sử dụng để tổ chức và lưu trữ dữ liệu. 
+
+- Một linked list bao gồm một chuỗi các "nút" (nodes), mỗi nút chứa một giá trị dữ liệu và một con trỏ (pointer) đến nút tiếp theo trong chuỗi.
+- Cấu trúc 1 node:
+```
+typedef struct node{
+    int value;	// Dữ liệu kiểu int
+    struct node* next;	// Con trỏ trỏ đến nút tiếp theo
+} node;
+```
+- Tạo 1 node mới:
+```
+node *createNode(int value){
+    node *ptr = (node*)malloc(sizeof(node));
+
+    ptr->value = value;
+    ptr->next = NULL;
+
+    return ptr;
+}
+```
+
+- Tính chất:
+	- Phần tử cuối cùng trong DSLK trỏ đến NULL (con trỏ NULL).
+	- Mỗi node trong DSLK đều được cấp phát động và số lượng phần tử trong DSLK phụ thuộc vào bộ nhớ Heap.
+	- Có thể thay đổi kích thước qua việc thêm, xóa phần tử.
+	- Truy cập phần tử trong DSLK cần truy cập tuần tự, **KHÔNG** thể truy cập qua chỉ số.
+ 	- Mỗi node trong DSLK thực chất là một con trỏ, nó là địa chỉ một ô nhớ mà ô nhớ đó được sử dụng để lưu trữ thông tin về một node. 
+![image](https://github.com/user-attachments/assets/fedc69d4-9da0-497e-bba9-795e00b2b824)
 
 
 
