@@ -1051,6 +1051,9 @@ typedef struct node{
     struct node* next;	// Con trỏ trỏ đến nút tiếp theo
 } node;
 ```
+
+![image](https://github.com/user-attachments/assets/fedc69d4-9da0-497e-bba9-795e00b2b824)
+
 - Tạo 1 node mới:
 ```
 node *createNode(int value){
@@ -1069,7 +1072,7 @@ node *createNode(int value){
 	- Có thể thay đổi kích thước qua việc thêm, xóa phần tử.
 	- Truy cập phần tử trong DSLK cần truy cập tuần tự, **KHÔNG** thể truy cập qua chỉ số.
  	- Mỗi node trong DSLK thực chất là một con trỏ, nó là địa chỉ một ô nhớ mà ô nhớ đó được sử dụng để lưu trữ thông tin về một node. 
-![image](https://github.com/user-attachments/assets/fedc69d4-9da0-497e-bba9-795e00b2b824)
+
 
 
 
