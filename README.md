@@ -1073,6 +1073,161 @@ node *createNode(int value){
 	- Truy cập phần tử trong DSLK cần truy cập tuần tự, **KHÔNG** thể truy cập qua chỉ số.
  	- Mỗi node trong DSLK thực chất là một con trỏ, nó là địa chỉ một ô nhớ mà ô nhớ đó được sử dụng để lưu trữ thông tin về một node. 
 
+# BÀI 11: STACK - QUEUE
+## 11.1 Stack
+**Stack** (ngăn xếp) là một cấu trúc dữ liệu tuân theo nguyên tắc **"Last In, First Out"** (LIFO), nghĩa là phần tử cuối cùng được thêm vào Stack sẽ là phần tử đầu tiên được lấy ra.
+
+![image](https://github.com/user-attachments/assets/0d3e8537-9c59-4ac1-9c76-bc41506de6e3)
+
+Định nghĩa 1 Stack:
+```
+typedef struct {
+    int* items; // Mảng chứa các giá trị trong ngăn xếp
+    int size;   // Kích thước của mảng 
+    int top;   // Giá trị của phần tử trên cùng
+} Stack;
+```
+
+Các thao tác cơ bản trên Stack bao gồm:
+- **initialize**: Khởi tạo ngăn xếp rỗng.
+```
+void initialize(Stack *stack, int size) {
+    stack->items = (int*) malloc(sizeof(int) * size);
+    stack->size = size;
+    stack->top = -1;
+}
+```
+- **is_empty**: Kiểm tra xem ngăn xếp có rỗng không.
+```
+int is_empty(Stack stack) {
+    return stack.top == -1;
+}
+```  
+- **is_full**: Kiểm tra xem ngăn xếp có bị đầy (tràn) hay không.
+```
+int is_full(Stack stack) {
+    return stack.top == stack.size - 1;
+}
+```
+- **push**: Thêm một phần tử vào ngăn xếp.
+```
+void push(Stack *stack, int value) {
+    if (!is_full(*stack)) {
+        stack->items[++stack->top] = value;
+    } else {
+        printf("Stack overflow\n");
+    }
+}
+```
+- **pop**: Lấy ra phần tử ở đỉnh ngăn xếp.
+```
+int pop(Stack *stack) {
+    if (!is_empty(*stack)) {
+        return stack->items[stack->top--];
+    } else {
+        printf("Stack underflow\n");
+        return -1;
+    }
+}
+```
+- **top**: Trả về phần tử ở đỉnh ngăn xếp.
+```
+int top(Stack stack) {
+    if (!is_empty(stack)) {
+        return stack.items[stack.top];
+    } else {
+        printf("Stack is empty\n");
+        return -1;
+    }
+}
+```
+
+## 11.2 Queue
+**Queue** (hàng đợi) là một cấu trúc dữ liệu tuân theo nguyên tắc **"First In, First Out"** (FIFO), nghĩa là phần tử đầu tiên được thêm vào hàng đợi sẽ là phần tử đầu tiên được lấy ra. 
+
+![image](https://github.com/user-attachments/assets/a3ee63b2-079c-45ad-81c3-6460c96bb085)
+
+**Queue** trong lập trình nhúng: Hoạt động kiểu Circular Queue
+
+![image](https://github.com/user-attachments/assets/a7628eb3-8f15-42a7-ac0d-94d34342252d)
+
+Định nghĩa 1 Queue:
+```
+typedef struct {
+    int* items;	// Mảng chứa các giá trị trong ngăn xếp
+    int size;	// Kích thước của mảng
+    int front, rear;	// Giá trị của phần tử đầu và cuối
+} Queue;
+```
+
+Các thao tác cơ bản trên hàng đợi bao gồm:
+- **initialize**: Khởi tạo một hàng đợi rỗng.
+```
+void initialize(Queue *queue, int size) 
+{
+    queue->items = (int*) malloc(sizeof(int)* size);
+    queue->front = -1;
+    queue->rear = -1;
+    queue->size = size;
+}
+```
+- **is_empty**: Kiểm tra hàng đợi có rỗng hay không.
+```
+int is_empty(Queue queue) {
+    return queue.front == -1;
+}
+```
+- **is_full**: Kiểm tra hàng đợi đã bị đầy chưa.
+```
+int is_full(Queue queue) {
+    return (queue.rear + 1) % queue.size == queue.front;
+}
+```
+- **front**: Trả về giá trị của phần tử ở đầu hàng đợi.
+```
+int front(Queue queue) {
+    if (!is_empty(queue)) {
+        return queue.items[queue.front];
+    } else {
+        printf("Queue is empty\n");
+        return -1;
+    }
+}
+```
+- **enqueue**: Đẩy một phần tử vào cuối hàng đợi.
+```
+void enqueue(Queue *queue, int value) {
+    if (!is_full(*queue)) {
+        if (is_empty(*queue)) {
+            queue->front = queue->rear = 0;
+        } else {
+            queue->rear = (queue->rear + 1) % queue->size;
+        }
+        queue->items[queue->rear] = value;
+    } else {
+        printf("Queue overflow\n");
+    }
+}
+```
+- **dequeue**: Loại bỏ một phần tử ở đầu hàng đợi.
+```
+int dequeue(Queue *queue) {
+    if (!is_empty(*queue)) {
+        int dequeued_value = queue->items[queue->front];
+        if (queue->front == queue->rear) {
+            queue->front = queue->rear = -1;
+        } else {
+            queue->front = (queue->front + 1) % queue->size;
+        }
+        return dequeued_value;
+    } else {
+        printf("Queue underflow\n");
+        return -1;
+    }
+}
+```
+
+
 
 
 
