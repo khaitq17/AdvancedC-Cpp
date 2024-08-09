@@ -1084,7 +1084,7 @@ node *createNode(int value){
 typedef struct {
     int* items; // Mảng chứa các giá trị trong ngăn xếp
     int size;   // Kích thước của mảng 
-    int top;   // Giá trị của phần tử trên cùng
+    int top;   // Chỉ số của phần tử trên cùng
 } Stack;
 ```
 
@@ -1156,7 +1156,7 @@ int top(Stack stack) {
 typedef struct {
     int* items;	// Mảng chứa các giá trị trong ngăn xếp
     int size;	// Kích thước của mảng
-    int front, rear;	// Giá trị của phần tử đầu và cuối
+    int front, rear;	// Chỉ số của phần tử đầu và cuối
 } Queue;
 ```
 
