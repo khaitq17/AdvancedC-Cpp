@@ -1209,7 +1209,7 @@ void enqueue(Queue *queue, int value) {
     }
 }
 ```
-- **dequeue**: Loại bỏ một phần tử ở đầu hàng đợi.
+- **dequeue**: Loại bỏ một phần tử ở đầu hàng đợi và trả về phần tử đó.
 ```
 int dequeue(Queue *queue) {
     if (!is_empty(*queue)) {
