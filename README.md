@@ -799,10 +799,10 @@ char *ptr = "Hello World!";		// Phân vùng Text
 
 int main(){
 	a = 10; 	// Lỗi không thể thay đổi được hằng số
-    printf("a = %d\n", a);	
+	printf("a = %d\n", a);	
 
-    *ptr = 'K';		// Lỗi không thể thay đổi con trỏ kiểu char
-    printf("%s\n", ptr);	
+	*ptr = 'K';		// Lỗi không thể thay đổi con trỏ kiểu char
+	printf("%s\n", ptr);	
 
     return 0;
 }
@@ -876,9 +876,9 @@ Ví dụ:
 
 int tong(int a, int b){
 	const int x = 10;	// Biến cục bộ là hằng số nhưng vẫn được lưu ở phân vùng Stack và chỉ có quyền đọc.
-    int c;		// Các biến cục bộ a, b, c được lưu ở phân vùng Stack 
-    c = a + b;
-    return c;
+	int c;		// Các biến cục bộ a, b, c được lưu ở phân vùng Stack 
+	c = a + b;
+	return c;
 }
 
 int main(){
