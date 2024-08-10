@@ -7,7 +7,7 @@ char *error_code;
 
 #define TRY             if((exception_code = setjmp(buf)) == 0)
 #define CATCH(x)        else if(exception_code == x)
-#define THROW(x, ERROR) {error_code = ERROR; longjmp(buf, x);}
+#define THROW(x, ERROR) {error_code = #ERROR; longjmp(buf, x);}
 
 double divide(int a, int b){
    if(b == 0){

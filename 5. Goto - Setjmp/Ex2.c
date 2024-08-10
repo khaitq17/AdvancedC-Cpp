@@ -7,7 +7,7 @@ char *error_message;
 
 #define TRY                if((exception_code = setjmp(buf)) == 0)
 #define CATCH(x)           else if(exception_code == x)
-#define THROW(x, ERROR)    {error_message = ERROR; longjmp(buf, x);}
+#define THROW(x, ERROR)    {error_message = #ERROR; longjmp(buf, x);}
 
 enum ErrorCodes{
     NO_ERROR,
