@@ -22,8 +22,7 @@ int main() {
 	return 0;
 }
 ```
-Kích thước của con trỏ là **4 bytes** với hệ thống **32-bit** hoặc **8 bytes** với hệ thống **64-bit**.
-- Và kích thước của con trỏ sẽ KHÔNG phụ thuộc vào kiểu dữ liệu mà nó trỏ đến.
+Kích thước của con trỏ là **4 bytes** với hệ thống **32-bit** hoặc **8 bytes** với hệ thống **64-bit**. Và kích thước của con trỏ sẽ KHÔNG phụ thuộc vào kiểu dữ liệu mà nó trỏ đến.
 
 Ví dụ:
 ```
