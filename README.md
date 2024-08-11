@@ -283,7 +283,10 @@ Kết quả:
 # BÀI 4: EXTERN - STATIC - VOLATILE - REGISTER
 ## 4.1 Extern
 - **Extern** được sử dụng để lấy 1 biến hoặc 1 hàm đã được khai báo trong 1 file nguồn khác vào chương trình hiện tại.
+- Biến (hoặc hàm) đó là tham chiếu của một biến (hoặc hàm) cùng tên nào đó, đã được định nghĩa bên ngoài. Nó chỉ khai báo chứ không định nghĩa (cấp phát bộ nhớ cho biến).
+- Biến (hoặc hàm) được tham chiếu phải được khai báo ở cấp độ cao nhất (toàn cục).
 - Giúp quản lý liên kết giữa các file nguồn.
+- Khi sử dụng `extern`, không được khai báo giá trị ban đầu cho biến.
 
 Ví dụ:
 
@@ -314,7 +317,7 @@ int main(){
 ```
 ## 4.2 Static
 ### 4.2.1 Static local
-- Biến Static cục bộ được khai báo trong 1 hàm.
+- Biến **Static local** (Static cục bộ) được khai báo trong 1 hàm.
 - Chỉ khởi tạo 1 lần duy nhất.
 - Giữ giá trị của biến qua các lần gọi hàm.
 - Được sử dụng hết vòng đời của chương trình.
@@ -337,16 +340,32 @@ int main(){
 }
 ```
 ### 4.2.2 Static global
-- Biến Static toàn cục được khai báo bên ngoài hàm.
+- Biến **Static global**(Static toàn cục) được khai báo bên ngoài hàm.
 - Hạn chế phạm vi chỉ được sử dụng trong file nguồn hiện tại.
 - Không thể gọi ra và sử dụng trong file khác, kể cả khi dùng `extern`.
 
 ## 4.3 Volatile
+- **Volatile** có nghĩa là không dự đoán được.
 - Từ khóa `volatile` được sử dụng để báo hiệu cho trình biên dịch rằng một biến có thể thay đổi ngẫu nhiên, ngoài sự kiểm soát của chương trình. 
 - Việc này ngăn chặn trình biên dịch tối ưu hóa hoặc xóa bỏ các thao tác trên biến đó, giữ cho các thao tác trên biến được thực hiện như đã được định nghĩa.
+- Trong thực tế, có 3 loại biến mà giá trị có thể bị thay đổi như vậy:
+	- Memory-mapped peripheral registers (thanh ghi ngoại vi có ánh xạ đến ô nhớ).
+	- Biến toàn cục được truy xuất từ các tiến trình con xử lý ngắt (interrupt service routine).
+	- Biến toàn cục được truy xuất từ nhiều tác vụ trong một ứng dụng đa luồng.
 
 ## 4.4 Register
 Từ khóa `register` để cho một biến được sử dụng thường xuyên và có thể được lưu trữ trong một thanh ghi máy tính thay vì được lưu vào trong bộ nhớ RAM, nhằm tăng tốc độ truy cập.
+
+- Trong kiến trúc của vi xử lý thì ALU (Arithmetic Logic Unit) đóng vai trò xử lý các tính toán số học. Dữ liệu đưa vào làm việc với ALU phải chứa trong một vùng đặc biệt, gọi là các thanh ghi (register), và ALU chỉ làm việc với đống thanh ghi đó.
+
+![image](https://github.com/user-attachments/assets/fc9a0e16-a1df-40a3-acc2-4de18e65e086)
+
+- Khi các biến khai báo trong chương trình sẽ được đặt ở bộ nhớ ngoài (RAM, …). Do đó với khai báo biến thông thường, để thực hiện một phép tính thì cần có 3 bước:
+	- Nạp giá trị từ vùng nhớ chứa biến vào register.
+	- Yêu cầu ALU xử lý register vừa được nạp giá trị.
+	- Đưa kết quả vừa xử lý của ALU ra ngoài vùng nhớ chứa biến.
+ 
+Khi thêm từ khóa `register` để khai báo biến, thì tức là ta đã yêu cầu trình biên dịch ưu tiên đặc biệt dành luôn vùng register để chứa biến và giảm được các bước tính toán trên biến đó, giúp tăng tốc độ truy cập.
 
 Ví dụ:
 ```
@@ -427,7 +446,7 @@ Ket thuc!
 
 Cả hai hàm này thường được sử dụng để thực hiện xử lý ngoại lệ trong C, mặc dù nó không phải là một cách tiêu biểu để xử lý ngoại lệ trong ngôn ngữ này.
 
-- **jmp_buf**: Kiểu dữ liệu được định nghĩa trong setjmp.h
+- **jmp_buf**: Kiểu dữ liệu được định nghĩa trong "setjmp.h"
 ```
 jmp_buf buffer;	// Biến toàn cục
 ```
