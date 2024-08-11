@@ -1,3 +1,6 @@
+<details>
+	<summary><strong>BÀI 3: POINTER</strong></summary>
+
 # BÀI 3: POINTER
 Con trỏ (Pointer) là một biến chứa địa chỉ bộ nhớ của một biến khác. Việc sử dụng con trỏ giúp chúng ta thực hiện các thao tác trên bộ nhớ một cách linh hoạt hơn.
 - Khai báo:
@@ -279,6 +282,11 @@ int main(){
 Kết quả:
   
 ![image](https://github.com/user-attachments/assets/12987b23-bf07-46b8-8515-8a86eed5ddf4)
+</details>
+
+
+<details>
+	<summary><strong>BÀI 4: EXTERN - STATIC - VOLATILE - REGISTER</strong></summary>
 
 # BÀI 4: EXTERN - STATIC - VOLATILE - REGISTER
 ## 4.1 Extern
@@ -401,6 +409,11 @@ Nhưng khi sử dụng `register int i`:
 ```
 Thoi gian chay cua chuong trinh: 0.001000 giay
 ```
+</details>
+
+
+<details>
+	<summary><strong>BÀI 5: GOTO - SETJMP</strong></summary>
 
 # BÀI 5: GOTO - SETJMP
 ## 5.1 Goto
@@ -485,6 +498,11 @@ int main(){
     return 0;
 }
 ```
+</details>
+
+
+<details>
+	<summary><strong>BÀI 6: BITMASK</strong></summary>
 
 # BÀI 6: BITMASK
 **Bitmask** là một kỹ thuật sử dụng các bit để lưu trữ và thao tác với các cờ (flags) hoặc trạng thái. Có thể sử dụng bitmask để đặt, xóa và kiểm tra trạng thái của các bit cụ thể trong một từ (word).
@@ -577,6 +595,11 @@ int main() {
     return 0;
 }
 ```
+</details>
+
+
+<details>
+	<summary><strong>BÀI 7: STRUCT - UNION</strong></summary>
 
 # BÀI 7: STRUCT - UNION 
 ## 7.1 Struct
@@ -794,6 +817,11 @@ int main()
     return 0;
 }
 ```
+</details>
+
+
+<details>
+	<summary><strong>BÀI 8: MEMORY LAYOUT</strong></summary>
 
 # BÀI 8: MEMORY LAYOUT
 Chương trình main.exe (trên window), main.hex (nạp vào vi điều khiển) được lưu ở bộ nhớ SSD hoặc FLASH. Khi nhấn run chương trình trên Window (cấp nguồn cho vi điều khiển) thì những chương trình này sẽ được copy vào bộ nhớ RAM để thực thi.
@@ -1010,6 +1038,11 @@ Trong đó :
 |Lỗi xảy ra đối với vùng nhớ|Nếu chương trình bạn sử dụng quá nhiều bộ nhớ vượt quá khả năng lưu trữ của Stack chắc chắn sẽ xảy ra tình trạng tràn bộ nhớ Stack (Stack overflow), các trường hợp xảy ra như khởi tạo quá nhiều biến cục bộ, hàm đệ quy vô hạn,...|- Nếu liên tục cấp phát vùng nhớ mà không giải phóng thì sẽ bị lỗi tràn vùng nhớ Heap (Heap overflow).<br>- Nếu khởi tạo một vùng nhớ quá lớn mà vùng nhớ Heap không thể lưu trữ một lần được sẽ bị lỗi khởi tạo vùng nhớ Heap thất bại.|
 
 Sử dụng **Stack** nếu biết chính xác lượng dữ liệu phân bổ trước khi biên dịch và dữ liệu không quá lớn. Ngược lại, nên sử dụng **Heap**.
+</details>
+
+
+<details>
+	<summary><strong>BÀI 9: JSON</strong></summary>
 
 # BÀI 9: JSON
 - **JSON** là viết tắt của "JavaScript Object Notation" (Ghi chú về Đối tượng JavaScript). Đây là một định dạng truyền tải dữ liệu phổ biến trong lập trình và giao tiếp giữa các máy chủ và trình duyệt web, cũng như giữa các hệ thống khác nhau.
@@ -1058,6 +1091,11 @@ typedef enum{
     JSON_OBJECT
 } JsonType;
 ```
+</details>
+
+
+<details>
+	<summary><strong>BÀI 10: LINKED LIST</strong></summary>
 
 # BÀI 10: LINKED LIST
 **Linked list** hay **danh sách liên kết** (DSLK) là một cấu trúc dữ liệu được sử dụng để tổ chức và lưu trữ dữ liệu. 
@@ -1090,7 +1128,11 @@ node *createNode(int value){
 	- Mỗi node trong DSLK đều được cấp phát động và số lượng phần tử trong DSLK phụ thuộc vào bộ nhớ Heap.
 	- Có thể thay đổi kích thước qua việc thêm, xóa phần tử.
 	- Truy cập phần tử trong DSLK cần truy cập tuần tự, **KHÔNG** thể truy cập qua chỉ số.
- 	- Mỗi node trong DSLK thực chất là một con trỏ, nó là địa chỉ một ô nhớ mà ô nhớ đó được sử dụng để lưu trữ thông tin về một node. 
+ 	- Mỗi node trong DSLK thực chất là một con trỏ, nó là địa chỉ một ô nhớ mà ô nhớ đó được sử dụng để lưu trữ thông tin về một node.
+</details>
+
+<details>
+	<summary><strong>BÀI 11: STACK - QUEUE</strong></summary>
 
 # BÀI 11: STACK - QUEUE
 ## 11.1 Stack
@@ -1245,6 +1287,23 @@ int dequeue(Queue *queue) {
     }
 }
 ```
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
 
 
 
