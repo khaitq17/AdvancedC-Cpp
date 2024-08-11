@@ -64,7 +64,7 @@ int main(){
 	for(int i = 0; i<5; i++){
 		printf("Gia tri cua phan tu thu %d la: %d\n", i+1, *(ptr+i));
 	}
-    return 0;
+	return 0;
 }
 ```
 ## 3.1 Void Pointer
