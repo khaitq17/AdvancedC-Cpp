@@ -823,7 +823,7 @@ int main(){
 	*ptr = 'K';		// Lỗi không thể thay đổi con trỏ kiểu char
 	printf("%s\n", ptr);	
 
-    return 0;
+	return 0;
 }
 ```
 ## 8.2 Data Segment
@@ -831,7 +831,7 @@ int main(){
 - Chứa các biến toàn cục được khởi tạo với giá trị khác 0.
 - Chứa các biến static được khởi tạo với giá trị khác 0.
 - Quyền truy cập là đọc và ghi, tức là có thể đọc và thay đổi giá trị của biến.
-- Tất cả các biến sẽ được thu hồi sau khi chương trình kết thúc.
+- Tất cả các biến sẽ được thu hồi **sau khi chương trình kết thúc**.
 
 ![image](https://github.com/user-attachments/assets/43b01e88-f724-4e13-bdf7-7e9875fde4e0)
 
@@ -861,7 +861,7 @@ int main(){
 - Chứa các biến toàn cục khởi tạo với giá trị bằng 0 hoặc không gán giá trị.
 - Chứa các biến static với giá trị khởi tạo bằng 0 hoặc không gán giá trị.
 - Quyền truy cập là đọc và ghi, tức là có thể đọc và thay đổi giá trị của biến.
-- Tất cả các biến sẽ được thu hồi sau khi chương trình kết thúc.
+- Tất cả các biến sẽ được thu hồi **sau khi chương trình kết thúc**.
 
 ![image](https://github.com/user-attachments/assets/5d1eb88e-fba4-4129-913f-52d8323d3bb6)
 
@@ -885,7 +885,7 @@ int main(){
 ## 8.4 Stack
 - Chứa các biến cục bộ, tham số truyền vào.
 - Quyền truy cập: đọc và ghi, nghĩa là có thể đọc và thay đổi giá trị của biến trong suốt thời gian chương trình chạy.
-- Sau khi ra khỏi hàm, sẽ thu hồi vùng nhớ.
+- Các biến sẽ được thu hồi vùng nhớ **sau khi ra khỏi hàm**.
 
 ![image](https://github.com/user-attachments/assets/23e16469-2639-4ffc-86bd-386b75a47584)
 
@@ -909,9 +909,9 @@ int main(){
 ```
 ## 8.5 Heap
 Cấp phát động:
-- Heap được sử dụng để cấp phát bộ nhớ động trong quá trình thực thi của chương trình.
+- **Heap** được sử dụng để cấp phát bộ nhớ động trong quá trình thực thi của chương trình.
 - Điều này cho phép chương trình tạo ra và giải phóng bộ nhớ theo nhu cầu, thích ứng với sự biến đổi của dữ liệu trong quá trình chạy.
-- Các hàm như malloc(), calloc(), realloc(), và free() được sử dụng để cấp phát và giải phóng bộ nhớ trên heap.
+- Các hàm như `malloc()`, `calloc()`, `realloc()`, và `free()` được sử dụng để cấp phát và giải phóng bộ nhớ trên heap.
 
 ![image](https://github.com/user-attachments/assets/ddcb9a31-2ad6-4743-afbb-dfd686b066ce)
 
@@ -924,7 +924,7 @@ Ví dụ:
 
 int main(){
     uint16_t *ptr = NULL;
-    ptr = (uint16_t*)malloc(sizeof(uint16_t) * 6);  // Cấp phát động 1 mảng có kích thước 2 * 6 = 12 byte
+    ptr = (uint16_t*)malloc(sizeof(uint16_t) * 6);  // Dùng malloc() cấp phát động 1 mảng có kích thước 2 * 6 = 12 byte
 
     for (int i = 0; i < 6; i++)
     {
@@ -936,7 +936,7 @@ int main(){
         printf("%d\n", ptr[i]);
     }
 
-    ptr = (uint16_t*)realloc(ptr, sizeof(uint16_t) * 10);  // Cấp phát động lại mảng với kích thước mới 2 * 10 = 20 byte
+    ptr = (uint16_t*)realloc(ptr, sizeof(uint16_t) * 10);  // Dùng realloc() cấp phát động lại mảng với kích thước mới 2 * 10 = 20 byte
 
     ptr[10] = 17;	// Ô nhớ chưa được cấp phát động nên biến a có thể truy cập đến và sử dụng
     int a;	// Các ô nhớ được cấp phát động thì biến a không thể truy cập đến
@@ -960,7 +960,7 @@ int main(){
 ### 8.6.1 Hàm malloc()
 Hàm **malloc()** là viết tắt của từ **memory allocation** tức là cấp phát động vùng nhớ, hàm này được sử dụng để xin cấp phát khối bộ nhớ theo kích thước byte mong muốn. 
 
-Giá trị trả về của hàm là một con trỏ kiểu void, nên ép kiểu sang kiểu dữ liệu cần dùng. 
+Giá trị trả về của hàm là một con trỏ kiểu `void`, nên ép kiểu sang kiểu dữ liệu cần dùng. 
 
 Các giá trị trong các ô nhớ được cấp phát là giá trị rác.
 
