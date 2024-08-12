@@ -825,6 +825,7 @@ int main()
 
 # BÀI 8: MEMORY LAYOUT
 Chương trình main.exe (trên window), main.hex (nạp vào vi điều khiển) được lưu ở bộ nhớ SSD hoặc FLASH. Khi nhấn run chương trình trên Window (cấp nguồn cho vi điều khiển) thì những chương trình này sẽ được copy vào bộ nhớ RAM để thực thi.
+
 ![image](https://github.com/user-attachments/assets/e84b6278-6b83-4f30-9d88-9a7878eead10)
 
 ## 8.1 Text Segment
