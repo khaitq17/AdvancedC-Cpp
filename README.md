@@ -1290,7 +1290,129 @@ int dequeue(Queue *queue) {
 ```
 </details>
 
+<details>
+	<summary><strong>BÀI 12: BINARY SEARCH - FILE OPERATIONS</strong></summary>
 
+# BÀI 12: BINARY SEARCH - FILE OPERATIONS
+## 12.1 Binary search
+- **Binary search** (Tìm kiếm nhị phân) là một thuật toán tìm kiếm xác định vị trí của một phần tử trong một mảng đã được sắp xếp.
+- Thuật toán này hoạt động bằng cách chia không gian tìm kiếm thành hai phần bằng cách so sánh giá trị cần tìm với giá trị ở giữa mảng. Dựa vào kết quả so sánh, thuật toán tiếp tục tìm kiếm trong nửa phía bên trái hoặc bên phải của mảng.
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+int binarySearch(int* arr, int l, int r, int x)	// x là phần tử cần tìm kiếm
+{	// l (left), r (right) lần lượt là vị trí của phần tử đầu tiên và cuối cùng trong mảng
+    if (r >= l)
+    {
+        int mid = (r + l) / 2;
+
+        if (arr[mid] == x)  return mid;	// So sánh x với phần tử ở vị trí giữ mảng
+
+        if (arr[mid] > x) return binarySearch(arr, l, mid - 1, x); // Đệ quy với mảng mới là nửa bên phải của mảng ban đầu
+
+        return binarySearch(arr, mid + 1, r, x);	// Đệ quy với mảng mới là nửa bên trái của mảng ban đầu
+    }
+
+    return -1;
+}
+
+void swap(int* a, int* b)	// Hàm hoán đổi vị trí 2 số
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void bubbleSort(int arr[], int n)	// Hàm sắp xếp mảng theo thứ tự tăng dần
+{
+    int i, j;
+    for (i = 0; i < n - 1; i++)
+    {       
+        for (j = 0; j < n - i - 1; j++)
+        {       
+            if (arr[j] > arr[j + 1])
+                swap(&arr[j], &arr[j + 1]);
+        }
+    }
+}
+
+int main()
+{
+    int n, x, i;
+    printf("Nhap so phan tu cua mang: ");
+    scanf_s("%d", &n);
+    int* arr = (int*)malloc(n * sizeof(int));
+    printf("Nhap cac phan tu cua mang: ");
+    for (i = 0; i < n; i++)
+    {
+        scanf_s("%d", &arr[i]);
+    }
+
+    bubbleSort(arr, n);
+    for (int i = 0; i < n; i++)
+    {
+        printf_s("i = %d\n", arr[i]);
+    }
+
+    printf_s("Nhap gia tri can tim: ");
+    scanf_s("%d", &x);
+    int result = binarySearch(arr, 0, n - 1, x);
+    if (result == -1)
+        printf_s("Khong tim thay %d trong mang.\n", x);
+    else
+        printf_s("Tim thay %d tai vi tri %d trong mang.\n", x, result);
+    free(arr);
+    return 0;
+}
+```
+
+## 12.2 File operations
+Ngôn ngữ lập trình C cung cấp một số thư viện và hàm tiêu biểu để thực hiện các thao tác với file.
+```
+FILE *file = fopen(const char *file_name, const char *access_mode);
+```
+Trong đó:
+- `const char *file_name` là tên file
+- `const char *access_mode` là chế độ sử dụng
+
+### 12.2.1 Các chế độ sử dụng
+|**Chế độ**|**Mô tả**|
+|:--------:|:--------|
+|"r"|Mở file với chế độ chỉ đọc file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.|
+|"rb"|Mở file với chế độ chỉ đọc file theo định dạng binary. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.|
+|"w"|Mở file với chế độ ghi vào file. Nếu file đã tồn tại, thì sẽ ghi đè vào nội dung bên trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.|
+|"wb"|Mở file với chế độ ghi vào file theo định dạng binary. Nếu file đã tồn tại thì sẽ ghi đè vào nội dung bên trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.|
+|"a"|Mở file với chế độ nối. Nếu mở file thành công thì trả về địa chỉ của phần tử cuối cùng trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.|
+|"ab"|Mở file với chế độ nối dưới định dạng binary. Nếu mở file thành công thì trả về địa chỉ của phần tử cuối cùng trong file. Nếu file chưa tồn tại sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.|
+|"r+"|Mở file với chế độ đọc và ghi file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.|
+|"rb+"|Mở file với chế độ đọc và ghi file dưới định dạng binary. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.|
+|"w+"|Mở file với chế độ ghi và đọc file. Nếu file đã tồn tại thì trả về địa chỉ của phần tử đầu tiên của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.|
+|"wb+"|Mở file với chế độ ghi và đọc file dưới định dạng binary. Nếu file đã tồn tại thì trả về địa chỉ của phần tử đầu tiên của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.|
+|"a+"|Mở file với chế độ nối và đọc file. Nếu file đã tồn tại thì trả về địa chỉ của phần tử cuối cùng của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.|
+|"ab+"|Mở file với chế độ nối và đọc file dưới định dạng binary. Nếu file đã tồn tại thì trả về địa chỉ của phần tử cuối cùng của file. Nếu file chưa tồn tại thì sẽ tạo một file mới.|
+
+### 12.2.2 Đọc file
+|**Tên hàm**|**Mô tả**|
+|:---------:|:--------|
+|`fscanf()`|Sử dụng chuỗi được định dạng và danh sách đối số biến để lấy đầu vào từ một File|
+|`fgets()`|Copy nội dung trong File vào mảng dùng để lưu trữ với tối đa số lượng phần tử của mảng hoặc tới khi gặp ký tự xuống dòng.|
+|`fgetc()`|Lấy giá trị tại địa chỉ hiện tại của file, sau đó di chuyển tới địa chỉ tiếp theo. Kiểu trả về là char|
+|`fread()`|Đọc một số lượng byte được chỉ định từ File .bin|
+	
+### 12.2.3 Ghi file
+|**Tên hàm**|**Mô tả**|
+|:---------:|:--------|
+|`fprintf()`|Ghi chuỗi vào File, và có thể thêm danh sách các đối số|
+|`fputs()`|Ghi chuỗi vào File|
+|`fputc()`|Ghi một ký tự vào File|
+|`fwrite()`|Ghi một số byte được chỉ định vào File .bin|
+
+**Một số hàm khác**
+- `fclose()`: Đóng File đã mở
+- `feof()`: Để kiểm tra địa chỉ hiện tại có phải ký tự cuối cùng của File hay chưa
+
+</details>
 
 
 
