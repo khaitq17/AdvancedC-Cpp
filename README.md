@@ -1414,7 +1414,227 @@ Trong đó:
 
 </details>
 
+<details>
+	<summary><strong>BÀI 13: CLASS</strong></summary>
 
+# BÀI 13: CLASS
+Trong C++, từ khóa `class` được sử dụng để định nghĩa một lớp, là một cấu trúc dữ liệu tự định nghĩa có thể chứa dữ liệu và các hàm thành viên liên quan.
+
+## 13.1 Phạm vi truy cập
+Có 3 phạm vi truy cập trong class, bao gồm `private`, `protected`, `public`.
+```
+class ClassName {
+private:
+	// Các thành phần riêng tư (private) chỉ có thể truy cập bên trong lớp
+	// Dữ liệu thành viên, hàm thành viên, ...
+
+protected:
+	// Các thành phần bảo vệ (protected) tương tự như private, nhưng có thể truy cập từ lớp kế thừa
+
+public:
+	// Các thành phần công khai (public) được truy cập từ bên ngoài lớp
+	// Dữ liệu thành viên, hàm thành viên, ...
+	// Hàm thành viên và các phương thức khác có thể được định nghĩa tại đây
+	// ...
+};
+```
+
+Ví dụ:
+```
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class SinhVien {
+public:
+    int id;
+    string name;
+    int score;
+
+    void display(){
+        cout << "MSSV: " << id << endl;
+        cout << "Ten: " << name << endl;
+        cout << "Diem: " << score << endl;
+    }
+};
+
+int main(){
+    SinhVien sv;	
+
+    sv.id = 2024;
+    sv.name = "Nguyen Van A";
+    sv.score = 10;
+
+    sv.display();
+
+    return 0;
+}
+```
+Trong đó:
+- `SinhVien` là 1 lớp (class)
+- `sv` là 1 đối tượng (object)
+- `id`, `name`, `score` là các thuộc tính (attribute)
+- `display()` là phương thức (method)
+
+Method có thể được khai báo như sau:
+```
+class SinhVien {
+public:
+    int id;
+    string name;
+    int score;
+
+    void display(); 
+};
+
+void SinhVien::display(){
+    cout << "MSSV: " << id << endl;
+    cout << "Ten: " << name << endl;
+    cout << "Diem: " << score << endl;
+}
+```
+
+## 13.2 Constructor 
+**Constructor** trong C++ là một method sẽ được tự động chạy đầu tiền khi khởi tạo object. Constructor sẽ có tên trùng với tên của class.
+
+```
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class HinhChuNhat {
+public:
+    double chieuDai;    
+    double chieuRong;
+
+    HinhChuNhat(int dai, int rong);
+
+    
+    double tinhDienTich(); 
+};
+
+HinhChuNhat::HinhChuNhat(int dai, int rong)
+{
+    chieuDai = dai;
+    chieuRong = rong;
+}
+
+double HinhChuNhat::tinhDienTich()
+{
+    return chieuDai * chieuRong;
+}
+
+int main(){
+    HinhChuNhat hcn(5, 3);
+    
+    cout << "Chieu dai: " << hcn.chieuDai << endl;
+    cout << "Chieu rong: " << hcn.chieuRong << endl;
+    cout << "Dien tich: " << hcn.tinhDienTich() << endl;
+    
+    return 0;
+}
+```
+
+Khi phạm vi truy cập của các thuộc tính là **private** thì chỉ có các phương thức và Constructor trong class có thể truy cập được các thuộc tính đó, còn object thì không.
+
+## 13.3 Destructor
+**Destructor** trong C++ là một method sẽ được tự động gọi khi object được giải phóng. Destructor sẽ có tên trùng với tên của class và thêm ký tự `~` ở phía trước tên.
+
+```
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class HinhChuNhat {
+public:
+    double chieuDai;    
+    double chieuRong;
+
+
+    HinhChuNhat(int dai, int rong);
+    ~HinhChuNhat();
+    
+    double tinhDienTich(); 
+};
+
+HinhChuNhat::HinhChuNhat(int dai, int rong)
+{
+    chieuDai = dai;
+    chieuRong = rong;
+}
+
+HinhChuNhat::~HinhChuNhat(){
+    cout << "Ket thuc" << endl;
+}
+
+double HinhChuNhat::tinhDienTich()
+{
+    return chieuDai * chieuRong;
+}
+
+int main(){
+    HinhChuNhat hcn(5, 3);
+    
+    cout << "Chieu dai: " << hcn.chieuDai << endl;
+    cout << "Chieu rong: " << hcn.chieuRong << endl;
+    cout << "Dien tich: " << hcn.tinhDienTich() << endl;
+    
+    return 0;
+}
+```
+## 13.4 Static trong class
+Khi một thuộc tính được khai báo với từ khóa `static`, tất cả các object sẽ sử dụng chung thuộc tính này với một địa chỉ duy nhất.
+
+Ví dụ:
+```
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class HinhChuNhat {
+
+public:
+    double chieuDai;
+    double chieuRong;
+    
+    static int var;	// Thuộc tính sử dụng cho tất cả các object
+};
+
+int HinhChuNhat::var;	// Thuộc tính với từ khóa static phải được khởi tạo để lấy đại chỉ trước
+
+int main()
+{
+    HinhChuNhat hinh1;
+    HinhChuNhat hinh2;
+    HinhChuNhat hinh3;
+
+    cout << "address of chieu dai: " << &hinh1.chieuDai << '\n'; 
+    cout << "address of chieu dai: " << &hinh2.chieuDai << '\n'; 
+    cout << "address of chieu dai: " << &hinh3.chieuDai << '\n'; 
+
+    cout << "address of var: " << &hinh1.var << '\n'; 
+    cout << "address of var: " << &hinh2.var << '\n'; 
+    cout << "address of var: " << &hinh3.var << '\n'; 
+
+    return 0;
+}
+```
+Kết quả:
+
+![image](https://github.com/user-attachments/assets/2444357a-5576-4758-9a89-c4f15fbb5788)
+
+Khi một method trong class được khai báo với từ khóa static:
+- Method này độc lập với bất kỳ đối tượng nào của lớp.
+- Method này có thể được gọi ngay cả khi không có đối tượng nào của class tồn tại.
+- Method này có thể được truy cập bằng cách sử dụng tên class thông qua toán tử :: .
+- Method này có thể truy cập các static property và các static method bên trong hoặc bên ngoài class.
+- Method có phạm vi bên trong class và không thể truy cập con trỏ đối tượng hiện tại.
+
+</details>
 
 
 
