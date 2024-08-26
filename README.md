@@ -1474,7 +1474,7 @@ int main(){
 Trong đó:
 - `SinhVien` là 1 lớp (class)
 - `sv` là 1 đối tượng (object)
-- `id`, `name`, `score` là các thuộc tính (attribute)
+- `id`, `name`, `score` là các thuộc tính (property)
 - `display()` là phương thức (method)
 
 Method có thể được khai báo như sau:
@@ -1637,6 +1637,22 @@ Khi một method trong class được khai báo với từ khóa static:
 </details>
 
 
+<details>
+	<summary><strong>BÀI 14: OOP</strong></summary>
+
+# BÀI 14: OOP
+## 14.1
+
+
+## 14.2
+
+
+## 14.3
+
+## 14.4
+
+
+</details>
 
 
 
