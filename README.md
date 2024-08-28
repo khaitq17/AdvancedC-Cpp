@@ -1501,8 +1501,8 @@ void SinhVien::display(){
 }
 ```
 
-## 13.2 Constructor 
-**Constructor** trong C++ là một method sẽ được tự động chạy đầu tiền khi khởi tạo object. Constructor sẽ có tên trùng với tên của class.
+## 13.2 Constructor (Hàm khởi tạo)
+**Constructor** trong C++ là một method sẽ được tự động chạy đầu tiền khi khởi tạo object. Constructor không định nghĩa kiểu trả về và có tên trùng với tên của class.
 
 ```
 #include <iostream>
@@ -1542,10 +1542,18 @@ int main(){
     return 0;
 }
 ```
+Nếu một lớp không được khai báo constructor thì chương trình sẽ tự động tạo ra một constructor mặc định (không có tham số đầu vào). Ở ví dụ trên, nếu không khai báo constructor `HinhChuNhat(int dai, int rong);` thì chương trình sẽ tự động thêm vào một constructor mặc định (constructor rỗng) với phạm vi truy cập `public` vào bên trong class. 
+```
+class HinhChuNhat {
+public:
+    HinhChuNhat() {}
+	//
+};
+```
 
-Khi phạm vi truy cập của các thuộc tính là **private** thì chỉ có các phương thức và Constructor trong class có thể truy cập được các thuộc tính đó, còn object thì không.
+Nếu dùng từ khóa `private` hoặc `protected` để khai báo constructor thì sẽ không thể khởi tạo được đối tượng của lớp này. 
 
-## 13.3 Destructor
+## 13.3 Destructor (Hàm hủy)
 **Destructor** trong C++ là một method sẽ được tự động gọi khi object được giải phóng. Destructor sẽ có tên trùng với tên của class và thêm ký tự `~` ở phía trước tên.
 
 ```
@@ -1647,15 +1655,82 @@ Khi một method trong class được khai báo với từ khóa static:
 	<summary><strong>BÀI 14: OOP</strong></summary>
 
 # BÀI 14: OOP
-## 14.1
+## 14.1 Tính đóng gói (Encapsulation)
+**Tính đóng gói (Encapsulation)** là ẩn đi các property “ mật” khỏi người dùng. Và để làm được điều này, ta sẽ khai báo các property ở quyền truy cập private (tức là không thể truy cập trực tiếp tới các property này). 
+
+Trong trường hợp ta muốn đọc hoặc ghi các property này, thì ta cung cấp các method ở quyền truy cập public. Mục đích chính của tính đóng gói là giúp hạn chế các lỗi khi phát triển chương trình.
+
+Ví dụ:
+```
+class Student {
+public:
+	string name;
+	int age;
+	double gpa;
+}
+```
+Các thuộc tính của lớp `Student` đều là `public` nên các thuộc tính của lớp này có thể được truy xuất trực tiếp từ nơi khác.
+
+Để đảm bảo tính đóng gói cho lớp `Student` thì nên để phạm vi truy cập của các thuộc tính này là `private` và truy xuất tới các thuộc tính này thông qua các phương thức `public`.
+```
+class Student {
+private:
+	string name;
+	int age;
+	double gpa;
+
+public:
+	string getName();
+
+	void setName(string name);
+
+	int getAge();
+
+	void setAge(int age);
+
+	double getGpa();
+
+	void setGpa(double gpa);
+};
+
+string Student::getName() {
+	return name;
+}
+
+void Student::setName(string name) {
+	this->name = name;
+}
+
+int Student::getAge() {
+	return age;
+}
+
+void Student::setAge(int age) {
+	this->age = age;
+}
+
+double Student::getGpa() {
+	return gpa;
+}
+
+void Student::setGpa(double gpa) {
+	this->gpa = gpa;
+}
+```
+
+Tính đóng gói giúp:
+- Hạn chế được các truy xuất không hợp lệ tới các thuộc tính của đối tượng.
+- Giúp cho trạng thái của các đối tượng luôn đúng.
+- Giúp ẩn đi những thông tin không cần thiết về đối tượng.
+- Cho phép thay đổi cấu trúc bên trong lớp mà không ảnh hưởng tới lớp khác.
+
+## 14.2 Tính kế thừa (Inheritance)
 
 
-## 14.2
+## 14.3 Tính đa hình (Polymorphism)
 
 
-## 14.3
-
-## 14.4
+## 14.4 Tính trừu tượng (Abstraction)
 
 
 </details>
