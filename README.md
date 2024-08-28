@@ -1439,6 +1439,12 @@ public:
 };
 ```
 
+|Phạm vi truy cập|Truy cập bên trong class?|Truy cập bên trong lớp con?|Truy cập bên ngoài class?|
+|:--------------:|:-----------------------:|:-------------------------:|:-----------------------:|
+|`private`|Có|Không|Không|
+|`protected`|Có|Có|Không|
+|`public`|Có|Có|Có|
+
 Ví dụ:
 ```
 #include <iostream>
