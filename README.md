@@ -1725,7 +1725,74 @@ Tính đóng gói giúp:
 - Cho phép thay đổi cấu trúc bên trong lớp mà không ảnh hưởng tới lớp khác.
 
 ## 14.2 Tính kế thừa (Inheritance)
+**Tính kế thừa (Inheritance)** là khả năng sử dụng lại các property và method của một class trong một class khác. Ta chia chúng làm 2 loại là class cha và class con. Để kế thừa từ class khác, ta dùng ký tự `:`.
 
+Tất cả những property và method có quyền truy cập là public và protected ở class cha sẽ được class con kế thừa.
+
+Ví dụ:
+```
+#include<iostream>
+
+using namespace std;
+
+class Person {
+private:
+	string name;
+	int age;
+
+public:
+	string getName();
+
+	void setName(string name);
+
+	int getAge();
+
+	void setAge(int age);
+};
+
+string Person::getName() {
+	return name;
+}
+
+void Person::setName(string name) {
+	this->name = name;
+}
+
+int Person::getAge() {
+	return age;
+}
+
+void Person::setAge(int age) {
+	this->age = age;
+}
+
+
+class Student : public Person {
+private:
+	double gpa;
+
+public:
+	double getGpa();
+
+	void setGpa(double gpa);
+};
+
+double Student::getGpa() {
+	return gpa;
+}
+
+void Student::setGpa(double gpa) {
+	this->gpa = gpa;
+}
+```
+
+Tính kế thừa giúp:
+- Tái sử dụng lại code.
+- Tăng khả năng mở rộng của chương trình.
+
+Có 3 kiểu kế thừa là public, private và protected. Những property và method được kế thừa từ class cha sẽ nằm ở quyền truy cập của class con tương ứng với kiểu kế thừa.
+
+![image](https://github.com/user-attachments/assets/ded04c2e-eabe-4fe7-843f-c0247c989276)
 
 ## 14.3 Tính đa hình (Polymorphism)
 
