@@ -1794,10 +1794,95 @@ Có 3 kiểu kế thừa là public, private và protected. Những property và
 
 ![image](https://github.com/user-attachments/assets/ded04c2e-eabe-4fe7-843f-c0247c989276)
 
+**Ghi đè phương thức**
+
+Trong kế thừa, khi lớp con khai báo phương thức có tên trùng với phương thức ở lớp cha thì phương thức của lớp cha sẽ bị thay thế bởi phương thức ở lớp con.
+
+Ví dụ:
+```
+#include<iostream>
+
+using namespace std;
+
+class SuperClass {
+public:
+	void display();
+};
+
+void SuperClass::display() {
+	cout << "Hello from SuperClass" << endl;
+}
+
+class SubClass : public SuperClass {
+public:
+	void display();
+};
+
+void SubClass::display() {
+	cout << "Hello from SubClass" << endl;
+}
+
+int main() {
+	SubClass s;
+	s.display();
+	return 0;
+}
+```
+
+Kết quả:
+```
+Hello from SubClass
+```
+
+Trong trường hợp phương thức của lớp cha bị ghi đè vẫn có thể gọi tới nó bằng toán tử `::`.
+```
+#include<iostream>
+
+using namespace std;
+
+class SuperClass {
+public:
+	void display();
+};
+
+void SuperClass::display() {
+	cout << "Hello from SuperClass" << endl;
+}
+
+class SubClass : public SuperClass {
+public:
+	void display();
+};
+
+void SubClass::display() {
+    SuperClass::display();
+	cout << "Hello from SubClass" << endl;
+}
+
+int main() {
+	SubClass s;
+	s.display();
+	return 0;
+}
+```
+
+Kết quả:
+```
+Hello from SuperClass
+Hello from SubClass
+```
+
+
 ## 14.3 Tính đa hình (Polymorphism)
+**Tính đa hình (Polymorphism)** có nghĩa là "nhiều dạng" và nó xảy ra khi chúng ta có nhiều class có liên quan với nhau thông qua tính kế thừa.
+
+Tính đa hình là cách dùng những method được kế thừa để thực hiện các tác vụ khác nhau. Điều này giúp chúng ta thể hiện 1 hành động theo nhiều cách khác nhau. (Function overriding)
+
+Function overloading cung cấp nhiều định nghĩa cho 1 function bằng cách thay đổi số lượng input parameter, kiểu dữ liệu của input parameter.
 
 
 ## 14.4 Tính trừu tượng (Abstraction)
+**Tính trừu tượng (Abstraction)** đề cập đến việc ẩn đi các chi tiết cụ thể của một đối tượng và chỉ hiển thị những gì cần thiết để sử dụng đối tượng đó.
 
 
 </details>
