@@ -1888,6 +1888,12 @@ Function overloading cung cấp nhiều định nghĩa cho 1 function bằng cá
 </details>
 
 
+<details>
+	<summary><strong>BÀI 15: STANDARD TEMPLATE LIBRARY</strong></summary>
+
+# BÀI 15: STANDARD TEMPLATE LIBRARY
+
+</details>
 
 
 
