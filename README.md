@@ -1892,6 +1892,355 @@ Function overloading cung cấp nhiều định nghĩa cho 1 function bằng cá
 	<summary><strong>BÀI 15: STANDARD TEMPLATE LIBRARY</strong></summary>
 
 # BÀI 15: STANDARD TEMPLATE LIBRARY
+**Standard Template Library (STL)** là một thư viện trong ngôn ngữ lập trình C++ cung cấp một tập hợp các template classes và functions để thực hiện nhiều loại cấu trúc dữ liệu và các thuật toán phổ biến. STL đã trở thành một phần quan trọng của ngôn ngữ C++ và làm cho việc lập trình trở nên mạnh mẽ, linh hoạt và hiệu quả.
+
+Một số thành phần chính của STL:
+- Container
+- Iterator
+- Algorithms
+- Functor
+
+## 15.1 Container
+Một container là một cấu trúc dữ liệu chứa nhiều phần tử theo một cách cụ thể. STL (Standard Template Library) cung cấp một số container tiêu biểu giúp lưu trữ và quản lý dữ liệu. 
+
+### 15.1.1 Vector
+**Vector** là một trong những container quan trọng nhất trong STL của C++. Nó cung cấp một mảng động với khả năng thay đổi kích thước một cách linh hoạt. 
+
+**Một số đặc điểm chính của vector**:
+- Vector là một mảng động, tức là có khả năng thay đổi kích thước một cách linh hoạt.
+- Truy cập ngẫu nhiên: Việc truy cập các phần tử của vector có thể được thực hiện bằng cách sử dụng chỉ số.
+- Hiệu suất chèn và xóa: Chèn và xóa phần tử ở cuối vector có hiệu suất tốt. Tuy nhiên, chèn và xóa ở vị trí bất kỳ có thể đòi hỏi di chuyển một số phần tử.
+
+**Một số method của vector**:
+- `at()`: Truy cập vào phần tử của vector
+- `size()`: Trả về kích thước của vector
+- `resize()`: Thay đổi kích thước của vector
+- `begin()`: Địa chỉ của phần tử đầu tiên của vector
+- `end()`: Địa chỉ của phần tử cuối cùng của vector
+- `push_back()`: Thêm phần tử vào vị trí cuối của vector
+
+Ví dụ:
+```
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main(){
+    vector<int> array = {1, 2, 3, 4};
+
+    array.at(0) = 5;    // 5 2 3 4
+    array.resize(6);    // 5 2 3 4 0 0
+    array.push_back(7); // 5 2 3 4 0 0 7
+
+    for (int i = 0; i < array.size(); i++)
+    {
+        cout << array.at(i) << " ";
+    }
+
+    return 0;
+}
+```
+
+### 15.1.2 List
+**List** là một container trong STL của C++, triển khai dưới dạng danh sách liên kết hai chiều. 
+
+**Một số đặc điểm quan trọng của list**:
+- Truy cập tuần tự: Truy cập các phần tử của list chỉ có thể thực hiện tuần tự, không hỗ trợ truy cập ngẫu nhiên.
+- Hiệu suất chèn và xóa: Chèn và xóa ở bất kỳ vị trí nào trong danh sách có hiệu suất tốt hơn so với vector. Điều này đặc biệt đúng khi thêm/xóa ở giữa danh sách.
+
+**Một số method của list**:
+- `push_back()`: Thêm node vào vị trí cuối của list
+- `pop_back()`: Xóa node ở vị trí cuối của list
+- `insert()`: Chèn một node vào list
+- `erase()`: Xóa một node của list
+- `size()`: Trả về kích thước của list
+- `begin()`: Địa chỉ của node đầu tiên của list
+- `end()`: Địa chỉ của node cuối cùng của list
+
+Ví dụ:
+```
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+int main(){
+    list<int> array = {1, 3, 5, 7, 9};
+
+    array.pop_back();       // 1 3 5 7        
+    array.push_back(11);    // 1 3 5 7 11    
+    array.push_back(13);    // 1 3 5 7 11 13
+
+    list<int>::iterator it; // Con trỏ it để truy cập phần tử
+    int i = 0;
+
+    // Chèn node vào vị trí thứ 2 
+    for (it = array.begin(); it != array.end(); it++)
+    {
+        if (i == 2)
+        {   
+            array.insert(it, 15);   // 1 3 15 5 7 11 13
+            break;
+        }
+        i++;
+    }
+
+    // Xóa node ở vị trí thứ 5 
+    i = 0;
+    for (it = array.begin(); it != array.end(); it++)
+    {
+        if (i == 5)
+        {
+            array.erase(it);    // 1 3 15 5 7 13  
+            break;
+        }
+        i++;
+    }
+ 
+    for (auto var : array)
+    {
+        cout << var << " ";
+    }
+
+    return 0;
+}
+```
+
+**Khi nào sử dụng vector? Khi nào sử dụng list?**
+|      |Trường hợp sử dụng|
+|:----:|:-----------------|
+|Vector|- Cần truy cập ngẫu nhiên đến các phần tử. <br> - Thực hiện nhiều thao tác chèn/xóa ở cuối danh sách. <br> - Dung lượng có thể biết trước hoặc thay đổi ít.|
+|List|- Thực hiện nhiều thao tác chèn/xóa ở bất kỳ vị trí nào trong danh sách. <br> - Cần thực hiện nhiều thao tác chèn/xóa mà không làm ảnh hưởng đến các iterators hiện có. <br> - Dung lượng không quan trọng hoặc thay đổi thường xuyên.|
+
+### 15.1.3 Map
+**Map** là một container trong STL của C++, cung cấp một cấu trúc dữ liệu ánh xạ key-value.
+
+**Một sô đặc điểm chính của map**:
+- Map lưu trữ các phần tử dưới dạng cặp key-value, trong đó mỗi key phải là duy nhất trong map.
+- Ta có thể thêm phần tử mới vào map bằng cách sử dụng toán tử `[]` hoặc `hàm insert()`. Để xóa phần tử, bạn có thể sử dụng hàm `erase()`.
+- Ta có thể sử dụng `iterator` để duyệt qua các phần tử của map.
+
+Ví dụ:
+```
+#include <iostream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+int main(){
+    map<string, int> mp;
+
+    map<string, int>::iterator it;
+
+	// Thêm phần tử vào map
+    mp["one"] = 1;	
+    mp["two"] = 2;	
+    mp["three"] = 3;
+    mp.insert(make_pair("four", 4));
+
+	// Xóa phần tử trong map	
+    mp.erase("three");	
+
+	// In ra các phần tử trong map
+    for (auto var : mp)
+    {
+        cout << "Key: " << var.first << ", Value: " << var.second << endl;
+    }
+
+	/*
+	Cách in khác 
+    for (it = mp.begin(); it != mp.end(); it++)
+    {
+        cout << "Key: " << (*it).first << ", Value: " << (*it).second << endl;
+    }
+	*/
+
+    return 0;
+}
+```
+Kết quả:
+```
+Key: four, Value: 4
+Key: one, Value: 1
+Key: two, Value: 2
+```
+
+### 15.1.4 Array
+**Array** là một container có kích thước cố định và có sẵn trong thư viện STL (Standard Template Library).
+
+**Một số đặc điểm của array**:
+- Array có kích thước cố định được xác định tại thời điểm biên dịch và không thể thay đổi sau khi được khai báo.
+- Array hỗ trợ truy cập ngẫu nhiên vào các phần tử thông qua toán tử `[]`.
+
+Ví dụ:
+```
+#include <iostream>
+#include <array>
+
+using namespace std;
+
+
+int main()
+{
+    array <int, 5> arr = {2,3,1,7,6};
+
+	// Kiểm tra xem hàm có rỗng hay không
+    if (arr.empty())	
+    {
+        cout << "Array is empty" << endl;
+    }
+    else
+    {
+        cout << "Array it not empty" << endl;
+    }   
+
+	// In ra các phần tử trong array
+    for (int i = 0; i < arr.size(); i++)
+    {
+        cout << "Value: " << arr.at(i) << endl;
+    }
+    
+    return 0;
+}
+```
+Kết quả:
+```
+Array it not empty
+Value: 2
+Value: 3
+Value: 1
+Value: 7
+Value: 6
+```
+
+## 15.2 Iterator 
+**Iterator** cung cấp một cách chung để duyệt qua các phần tử của một container mà không cần biết chi tiết về cách container được triển khai.
+
+Iterator là một đối tượng cho phép truy cập tuần tự qua các phần tử của một container. Nó giống như con trỏ, cho phép di chuyển qua các phần tử trong container.
+
+Ví dụ:
+```
+#include <iostream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+int main(){
+    map<string, int> mp;
+
+    map<string, int>::iterator it;	// Con trỏ it để truy cập phần tử
+
+	// Thêm, xóa phần tử
+
+	// In ra các phần tử thông qua iterator
+    for (it = mp.begin(); it != mp.end(); it++)
+    {
+        cout << "Key: " << (*it).first << ", Value: " << (*it).second << endl;
+    }
+	
+    return 0;
+}
+```
+
+## 15.3 Algorithm
+Thư viện STL (Standard Template Library) cung cấp một số thuật toán tiêu biểu thông qua algorithm. Các thuật toán này hoạt động trên các phạm vi hoặc các loại dữ liệu khác nhau, giúp thực hiện các nhiệm vụ như sắp xếp, tìm kiếm, chuyển đổi dữ liệu, và nhiều thao tác khác. 
+
+Ví dụ:
+```
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+
+int main()
+{
+    vector <int> arr = {3,5,7,4,1};
+
+    for (auto const var : arr)
+    {
+        cout << "Vector: " << var << endl;
+    }
+
+    sort(arr.begin(), arr.end());	// Hàm sắp xếp tăng dần
+    
+    cout << "vector after sort ascending: " << endl;
+
+    for (auto const var : arr)
+    {
+        cout << "Vector: " << var << endl;
+    }
+
+    sort(arr.begin(), arr.end(), greater<int>());	// Hàm sắp xếp giảm dần
+    
+    cout << "vector after sort descending: " << endl;
+
+    for (auto const var : arr)
+    {
+        cout << "Vector: " << var << endl;
+    }
+
+    return 0;
+}
+```
+Kết quả:
+```
+Vector: 3
+Vector: 5
+Vector: 7
+Vector: 4
+Vector: 1
+**********************************
+vector after sort ascending:
+Vector: 1
+Vector: 3
+Vector: 4
+Vector: 5
+Vector: 7
+**********************************
+vector after sort descending:
+Vector: 7
+Vector: 5
+Vector: 4
+Vector: 3
+Vector: 1
+```
+
+Ví dụ:
+```
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    vector <int> arr1 = {2,5,7,4,9};
+    
+    auto it = find(arr1.begin(), arr1.end(), 3);	// Hàm tìm kiếm phần tử
+    
+    if (it != arr1.end())
+    {
+        cout << "Found" << endl;
+    }
+    else
+    {
+        cout << "Not found" << endl;
+    }
+    
+    return 0;
+}
+```
+Kết quả:
+```
+Not found
+```
+
 
 </details>
 
