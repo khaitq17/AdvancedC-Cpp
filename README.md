@@ -1872,6 +1872,71 @@ Hello from SuperClass
 Hello from SubClass
 ```
 
+**Virtual function**
+
+Ví dụ:
+```
+#include <iostream>
+
+using namespace std;
+
+class Animal {
+public:
+	void sound() {
+		cout << "some sound" << endl;
+	}
+};
+
+class Cat : public Animal {
+public:
+	void sound() {
+		cout << "meow meow" << endl;
+	}
+};
+
+class Dog : public Animal {
+public:
+	void sound() {
+		cout << "woof woof" << endl;
+	}
+};
+
+int main() {
+	Cat cat;
+	Animal* animal1 = &cat;
+	animal1->sound();
+
+	Dog dog;
+	Animal* animal2 = &dog;
+	animal2->sound();
+	return 0;
+}
+```
+Trong ví dụ trên, con trỏ `animal1` và `animal2` trỏ tới đối tượng `cat` và đối tượng `dog` nhưng phương thức được gọi lại không phải là phương thức trong 2 đối tượng này mà là phương thức ở lớp `Animal`. Điều này là do khi biên dịch thì trình biên dịch không thể xác định được đối tượng mà con trỏ `animal` đang trỏ tới là đối tượng thuộc lớp nào, dẫn tới mặc định các phương thức được gọi sẽ là phương thức ở class cha.
+
+Kết quả:
+```
+some sound
+some sound
+```
+
+Để gọi tới được các phương thức ở class con thì bạn cần thêm từ khóa `virtual` vào phương thức ở class cha để chỉ rõ cho trình biên dịch biết rằng phương thức cần được gọi sẽ được xác định tại thời điểm runtime. Tức là khi có 1 hàm trong class cha mà ở các class con muốn tái sử dụng hàm đó thì phải thêm từ khóa `virtual` vào hàm ở class cha.
+
+Sau khi thêm từ khóa `virtual`:
+```
+class Animal {
+public:
+	virtual void sound() {
+		cout << "some sound" << endl;
+	}
+};
+```
+
+Kết quả:
+```
+meow meow
+woof woof
+```
 
 ## 14.3 Tính đa hình (Polymorphism)
 **Tính đa hình (Polymorphism)** có nghĩa là "nhiều dạng" và nó xảy ra khi chúng ta có nhiều class có liên quan với nhau thông qua tính kế thừa.
@@ -1880,10 +1945,122 @@ Tính đa hình là cách dùng những method được kế thừa để thực
 
 Function overloading cung cấp nhiều định nghĩa cho 1 function bằng cách thay đổi số lượng input parameter, kiểu dữ liệu của input parameter.
 
+Ví dụ:
+```
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int sum(int a, int b) {
+    return a+b;
+}
+
+int sum(int a, int b, int c) {
+    return a+b+c;
+}
+
+double sum(double a, double b) {
+    return a+b;
+}
+
+int main()
+{
+    cout << "Sum: " << sum(1,2) << endl;
+    cout << "Sum: " << sum(2.5,3.7) << endl;
+    cout << "Sum: " << sum(1,2,3) << endl;
+
+    return 0;
+}
+```
+Ta thấy 1 method `sum` có thể được định nghĩa với số lượng và kiểu dữ liệu của input parameter khác nhau.
+
+Kết quả:
+```
+Sum: 3
+Sum: 6.2
+Sum: 6
+```
 
 ## 14.4 Tính trừu tượng (Abstraction)
 **Tính trừu tượng (Abstraction)** đề cập đến việc ẩn đi các chi tiết cụ thể của một đối tượng và chỉ hiển thị những gì cần thiết để sử dụng đối tượng đó.
 
+Ví dụ:
+```
+#include <iostream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+class GiaiPhuongTrinh {
+private:
+    double a;
+    double b;
+    double c;
+    double x1;
+    double x2;
+    double delta;
+    void tinhNghiem()
+    {
+        delta = b*b - 4*a*c;
+        if (delta < 0)
+        {
+            delta = -1;
+        }
+        else if (delta == 0)
+        {
+            x1 = x2 = -b/ (2*a);
+        }
+        else if (delta > 0)
+        {
+            x1 = (-b + sqrt(delta))/(2*a);
+            x2 = (-b - sqrt(delta))/(2*a);
+        }
+    }
+        
+public:
+    void enterNumber(double num_a, double num_b, double num_c);
+    void printResult();
+
+};
+
+void GiaiPhuongTrinh::enterNumber(double num_a, double num_b, double num_c)
+{
+    a = num_a;
+    b = num_b;
+    c = num_c;
+}
+
+void GiaiPhuongTrinh::printResult()
+{
+    tinhNghiem();
+    if (delta == -1)
+    {
+        cout << "PT vo nghiem" << endl;
+    }
+    else if (delta == 0)
+    {
+        cout << "PT co nghiem chung: " << x1 << endl;
+    }
+    else if (delta > 0)
+    {
+        cout << "PT co 2 nghiem: \n";
+        cout << "x1: " << x1 << endl;
+        cout << "x2: " << x2 << endl;
+    }
+}
+
+int main()
+{
+  GiaiPhuongTrinh phuongtrinh1;
+  phuongtrinh1.enterNumber(1,5,4);
+  phuongtrinh1.printResult();
+
+  return 0;
+}
+```
+Trong ví dụ giải phương trình bậc hai trên, ta chỉ cần sử dụng các hàm như nhập hệ số và in ra kết quả, còn quá trình tính toán bên trong là không cần thiết nên ta có thể ẩn nó đi bằng cách cho vào trong `private`. 
 
 </details>
 
