@@ -2723,7 +2723,235 @@ Tong: 15
 </details>
 
 
+<details>
+	<summary><strong>BÀI 19: SMART POINTER</strong></summary>
 
+# BÀI 19: SMART POINTER
+
+## 19.1 Khái niệm
+Trong C++, **smart pointer** là một cơ chế quản lý bộ nhớ tự động giúp giảm thiểu rủi ro của lỗi liên quan đến quản lý bộ nhớ và tránh được việc quên giải phóng bộ nhớ đã được cấp phát.
+
+Ta có thể tự tạo ra 1 smart pointer dùng cho mọi đối tượng bằng cách dùng class template:
+```
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+class SmartPointer {
+private:
+    T* ptr; // Con trỏ quản lý bộ nhớ 
+
+public:
+    // Constructor: Nhận vào 1 con trỏ thô
+    explicit SmartPointer(T* p = nullptr) : ptr(p) {}	// Yêu cầu dùng hàm khởi tạo này
+
+    // Destructor: Giải phóng bộ nhớ khi đối tượng bị hủy
+    ~SmartPointer() {
+        if (ptr) {
+            delete ptr;
+        }
+    }
+
+    // Xóa bỏ khả năng copy để đảm bảo chỉ có 1 con trỏ sở hữu đối tượng
+    SmartPointer(const SmartPointer&) = delete; 
+    SmartPointer& operator = (const SmartPointer&) = delete;
+
+    // Cho phép chuyển nhượng quyền sở hữu (move semantics)
+    SmartPointer(SmartPointer&& other) noexcept : ptr(other.ptr) {
+        other.ptr = nullptr; // Chuyển quyền sở hữu để đối tượng cũ không còn trỏ đến dữ liệu
+    }
+
+    SmartPointer& operator = (SmartPointer&& other) noexcept {
+        if (this != other) {
+            // Giải phóng tài nguyên hiện tại
+            if (ptr) {
+                delete ptr;
+            }
+            // Chuyển quyền sở hữu
+            ptr = other.ptr;
+            other.ptr = nullptr;
+        }
+        return *this;
+    }
+
+    // Toán tử dereference để truy cập giá trị
+    T& operator*() const {
+        return *ptr;
+    }
+
+    // Toán tử -> để truy cập thành viên của con trỏ
+    T* operator->() const {
+        return ptr;
+    }
+
+    // Trả về con trỏ thô bên trong (nếu cần) 
+    T* get() const {
+        return ptr;
+    }
+
+    // Giải phóng quyền sở hữu và trả về con trỏ thô, không xóa đối tượng 
+    T* release() {
+        T* temp = ptr;
+        ptr = nullptr;
+        return temp;
+    }
+
+    // Thay thế con trỏ hiện tại bằng 1 con trỏ mới
+    void reset(T* p = nullptr) {
+        if (ptr) {
+            delete ptr;
+        }
+        ptr = p;
+    }
+
+};
+
+int main(){
+    SmartPointer<int> uptr(new int(10));	 
+
+    cout << "Value: " << *uptr << endl; 
+}
+```
+
+**Các loại Smart Pointer:**
+- Unique Pointer
+- Shared Pointer
+- Weak Pointer
+
+## 19.2 Unique Pointer
+**Unique Pointer (unique_ptr)** là một loại smart pointer trong C++, giúp quản lý bộ nhớ động và tự động giải phóng bộ nhớ khi không còn cần thiết. 
+
+Đặc điểm chính của unique_ptr:
+- Một unique_ptr chỉ có thể sở hữu một đối tượng hoặc mảng.
+- Khi một unique_ptr bị hủy, bộ nhớ của đối tượng sẽ được tự động giải phóng.
+- Có thể gán một đối tượng khác bằng cách xóa đối tượng hiện tại khỏi con trỏ.
+
+Ví dụ:
+```
+#include <iostream>
+#include <memory>
+using namespace std;
+
+class Rectangle {
+    int length;
+    int width;
+public:
+    Rectangle(int length, int width) : length(length), width(width) {}
+
+    int area() {
+		return length * width;
+	}
+};
+
+int main() {
+    unique_ptr<Rectangle> P1 = make_unique<Rectangle>(10, 5);
+    cout << P1->area() << endl;
+
+    //unique_ptr<Rectangle> P2 = P1; // Lỗi vì chỉ có 1 con trỏ có thể sở hữu đối tượng
+    unique_ptr<Rectangle> P2;
+    P2 = move(P1);	// Thay thế con trỏ hiện tại bằng 1 con trỏ mới
+    cout << P2->area() << endl;
+    return 0;
+}
+```
+
+## 19.3 Shared Pointer
+**Shared Pointer (shared_ptr)** là một smart pointer khác trong C++ và cũng giúp quản lý bộ nhớ động. 
+Điểm đặc biệt của shared_ptr:
+- Bằng cách sử dụng shared pointer nhiều con trỏ có thể trỏ đến một đối tượng tại một thời điểm.
+- Sử dụng một bộ đếm tham chiếu để theo dõi số lượng shared_ptr đang tham chiếu đến một đối tượng.
+- Chỉ giải phóng bộ nhớ khi không còn shared_ptr nào tham chiếu đến nó.
+
+Ví dụ:
+```
+#include <iostream>
+#include <memory>
+
+using namespace std;
+
+int main(){
+    shared_ptr<int> ptr1 = make_shared<int>(10);
+
+    shared_ptr<int> ptr2 = ptr1;
+
+    shared_ptr<int> ptr3 = ptr1;
+
+    cout << "Value: " << *ptr1 << endl;
+    cout << "Count: " << ptr1.use_count() << endl;   // Đếm xem có bao nhiêu object trỏ đến vùng nhớ
+    
+    int *ptr = ptr1.get();	// Trả về con trỏ thô
+}
+```
+Kết quả:
+```
+Value: 10
+Count: 3
+```
+Khi khai báo shared pointer trong 1 hàm nhỏ thì sau khi kết thúc hàm nó sẽ thu hồi con trỏ tham chiếu đến đối tượng.
+```
+#include <iostream>
+#include <memory>
+
+using namespace std;
+
+int main(){
+    shared_ptr<int> ptr1 = make_shared<int>(10);
+
+    shared_ptr<int> ptr2 = ptr1;
+
+    {
+    shared_ptr<int> ptr3 = ptr1;
+    cout << "Count: " << ptr1.use_count() << endl;	
+    }
+
+	// Sau khi kết thú hàm ptr3 sẽ bị thu hồi
+
+    cout << "Value: " << *ptr1 << endl;
+    cout << "Count: " << ptr1.use_count() << endl; 
+}
+```
+Kết quả:
+```
+Count: 3
+Value: 10
+Count: 2
+```
+
+## 19.4 Weak Pointer
+**Weak Pointer (weak_ptr)** là một cơ chế giữ tham chiếu yếu (weak reference) đến một đối tượng được quản lý bởi shared_ptr. Nó cung cấp một cách an toàn để theo dõi một đối tượng mà không tăng bộ đếm tham chiếu của shared_ptr và weak_ptr không trực tiếp truy cập đến đối tượng (object) mà nó theo dõi. 
+
+weak_ptr có một phương thức là lock(), mà trả về một shared_ptr. Nếu shared_ptr mà weak_ptr theo dõi vẫn tồn tại, lock() sẽ trả về một shared_ptr hợp lệ có thể sử dụng để truy cập đối tượng. Ngược lại, nếu shared_ptr đã bị giải phóng, lock() sẽ trả về một shared_ptr rỗng.
+
+Ví dụ:
+```
+#include <iostream>
+#include <memory>
+
+using namespace std;
+
+int main() {
+    shared_ptr<int> ptr1 = make_shared<int>(10);
+    
+    weak_ptr<int> ptr2 = ptr1;  
+
+    cout << ptr1.use_count() << endl;   // 1 
+
+    //cout << "ptr2: " << *ptr2 << endl;  // Weak pointer không đọc được
+
+    cout << "ptr2: " << *(ptr2.lock()) << endl; // Dùng lock để chuyển weak pointer -> shared pointer
+
+    // Weak pointer dùng để truy cập đến địa chỉ, đọc giá trị và không thể sửa được giá trị tại địa chỉ đó
+    cout << ptr2.expired(); // Trả về true nếu vùng nhớ bị thu hồi, và ngược lại
+}
+```
+Kết quả:
+```
+Count: 1
+ptr2: 10
+0
+```
+</details>
 
 
 
