@@ -2703,7 +2703,7 @@ int main(){
 
     display();
 
-    auto tong = [](int a, int b) -> int {	// Không bắt giữ biến môi trường, tham số đầu vào int a, int b, trả về kiểu int
+    auto tong = [](int a, int b) -> int { // Không bắt giữ biến môi trường, tham số đầu vào int a, int b, trả về kiểu int
         return a + b;
     };
 
