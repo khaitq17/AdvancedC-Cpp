@@ -2422,13 +2422,305 @@ Not found
 </details>
 
 
+<details>
+	<summary><strong>BÀI 16: GENERIC PROGRAMMING</strong></summary>
+
+# BÀI 16: GENERIC PROGRAMMING 
+
+## 16.1 Function templates
+**Function templates** trong C++ là một tính năng mạnh mẽ giúp viết các function hoặc class chung có thể được sử dụng cho nhiều kiểu dữ liệu khác nhau mà không cần phải triển khai nhiều phiên bản của cùng một function hoặc class. 
+
+Ví dụ:
+```
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+T sum(T a, T b) {
+	return a + b;
+}
+
+int main() {
+	int tong1 = sum(3, 7);	// T là int
+	double tong2 = sum(1.7, 0.5);	// T là double
+}
+```
+
+Ví dụ:
+```
+#include <iostream>
+
+using namespace std;
+
+template <typename T1, typename T2>
+T2 sum(T1 a, T2 b) {
+	return (T2)a + b;
+}
+
+int main() {
+	double tong = sum(3, 7.5);	// T1 là int, T2 là double
+}
+```
+
+## 16.2 Class templates
+**Class templates** trong C++ là một khái niệm tương tự như function templates, nhưng được áp dụng cho class thay vì function. Class templates cho phép bạn viết một lớp chung mà có thể được sử dụng với nhiều kiểu dữ liệu khác nhau.
+
+Ví dụ:
+```
+#include <iostream>
+
+using namespace std;
+
+template<typename T>
+class Sensor {
+private:
+    T data;
+public:
+    Sensor(T initData) {
+        this->data = initData;
+    }
+
+    void updateData(T newData) {
+        data = newData;
+    }
+
+    T getData() const {
+        return data;
+    }
+};
+
+int main(){
+    Sensor<double> temperaturSensor(36.5);
+    temperaturSensor.updateData(35);
+    cout << "Temperature: " << temperaturSensor.getData() << endl; 
+
+    Sensor<int> speedSensor(16);
+
+    cout << "Speed: " << speedSensor.getData() << endl;
+
+    return 0;
+}
+```
+</details>
 
 
+<details>
+	<summary><strong>BÀI 17: NAMESPACE</strong></summary>
 
- 
+# BÀI 17: NAMESPACE
+**Namespace** là từ khóa trong C++ được sử dụng để định nghĩa một phạm vi nhằm mục đích phân biệt các hàm, lớp, biến, ... cùng tên trong các thư viện khác nhau.
+
+Ví dụ:
+```
+#include <iostream>
+
+namespace NamespaceA {
+	int var = 5;
+	void display() {
+		std::cout << "Namespace A" << endl;
+	}
+	// ...
+}
+
+namespace NamespaceB {
+	int var = 10;
+	void display() {
+		std::cout << "Namespace B" << endl;
+	}
+	// ...
+}
+
+int main() {
+	std::cout << display(); // Lỗi vì trình biên dịch không biết hàm display() muốn gọi là hàm nào
+
+	std::cout << "var = " << NamespaceA::var << endl;
+	NamespaceA::display();
+
+	std::cout << "var = " << NamespaceB::var << endl;
+	NamespaceB::display();
+
+	return 0;
+}
+```
+Kết quả:
+```
+var = 5;
+Namespace A
+var = 10;
+Namespace B
+```
+
+- Ta cũng có thể mở rộng thư viện trong C++ bằng cách thêm các hàm, lớp, biến, ... vào trong namespace của thư viện đó và có thể mở rộng ở bất kỳ file nào. Ví dụ muốn mở rộng thư viện `std`:
+```
+#include <iostream>
+namespace std {
+	void display() {
+		std::cout << "Hello!" << endl;
+	}
+	// ...
+}
+
+int main(){
+	std::display();
+	return 0;
+}
+```
+
+- Nếu muốn khai báo hàm, biến thông qua namespace 1 cách ngắn gọn, ta có thể sử dụng `using namespace`:
+```
+using namespace std;
+
+int main() {
+	cout << "Hello world!" << endl;
+}
+```
+
+- Tuy nhiên, khi gọi 2 hàm cùng tên và cùng sử dụng từ khóa `using namespace` thì chương trình sẽ báo lỗi.
+```
+#include <iostream>
+
+using namespace NamespaceA;
+using namespace NamespaceB;
+
+namespace NamespaceA {
+	int var = 5;
+	void display() {
+		std::cout << "Namespace A" << endl;
+	}
+	// ...
+}
+
+namespace NamespaceB {
+	int var = 10;
+	void display() {
+		std::cout << "Namespace B" << endl;
+	}
+	// ...
+}
+
+int main() {
+	display();	// Chương trình báo lỗi
+
+	return 0;
+}
+```
+
+- Namespace lồng nhau:
+Khi không dùng `usingnamespace`:
+```
+#include <iostream>
+
+namespace NamespaceA {
+	int var = 5;
+	namespace NamespaceB {
+		int var1 = 10;
+	}
+}
+
+int main() {
+	std::cout << "var1 = " << NamespaceA::NamespaceB::var1 << endl;
+	return 0;
+}
+```
+Khi dùng `using namespace`:
+```
+#include <iostream>
+
+using namespace NamespaceA;
+
+namespace NamespaceA {
+	int var = 5;
+	namespace NamespaceB {
+		int var1 = 10;
+	}
+}
+
+int main() {
+	std::cout << "var1 = " << NamespaceB::var1 << endl;
+	return 0;
+}
+```
+Hoặc
+```
+#include <iostream>
+
+using namespace NamespaceA::NamespaceB;
+
+namespace NamespaceA {
+	int var = 5;
+	namespace NamespaceB {
+		int var1 = 10;
+	}
+}
+
+int main() {
+	std::cout << "var1 = " << var1 << endl;
+	return 0;
+}
+```
+</details>
 
 
+<details>
+	<summary><strong>BÀI 18: LAMBDA FUNCTION</strong></summary>
 
+# BÀI 18: LAMBDA FUNCTION
+**Lambda FUNCTION** là một tính năng mạnh mẽ được thêm vào ngôn ngữ lập trình C++ từ phiên bản C++11. Lambda cho phép định nghĩa hàm ngắn gọn (anonymous function) mà không cần phải viết một hàm riêng biệt. Cú pháp của lambda rất linh hoạt và có thể được sử dụng để viết mã ngắn gọn và dễ đọc.
+
+Khai báo:
+```
+[capture](parameters) -> return_type {
+    // function body
+}
+```
+
+Trong đó:
+- **Capture**: Cho phép bắt giữ biến từ môi trường xung quanh vào lambda.
+	- `[]`: Không bắt giữ bất kỳ biến nào từ môi trường xung quanh.
+	- `[var]`: Bắt giữ biến var theo giá trị.
+	- `[&var]`: Bắt giữ biến var theo tham chiếu.
+	- `[=]`: Bắt giữ tất cả biến theo giá trị.
+	- `[&]`: Bắt giữ tất cả biến theo tham chiếu.
+- **Parameters (parameters)**: Tương tự như định nghĩa hàm, có thể bao gồm các tham số của lambda.
+- **Return type (return_type)**: Kiểu dữ liệu trả về của lambda. Có thể bị bỏ qua nếu không cần.
+- **Function body**: Đặt trong dấu ngoặc nhọn {} và chứa mã nguồn thực thi của lambda.
+
+Ví dụ:
+```
+#include <iostream>
+
+using namespace std;
+
+int main(){
+    int x = 10;	// Biến môi trường
+    int y = 20;	// Biến môi trường
+
+    auto display = [x, y]() {	// Bắt giữ biến môi trường x, y, không có tham số đầu vào
+        cout << "Hello world" << endl;
+        cout << "x = " << x << ", y = " << y << endl; 
+    };
+
+    display();
+
+    auto tong = [](int a, int b) -> int {	// Không bắt giữ biến môi trường, tham số đầu vào int a, int b, trả về kiểu int
+        return a + b;
+    };
+
+    cout << "Tong: " << tong(10, 5) << endl;
+	
+    return 0;
+}
+```
+Kết quả:
+```
+Hello world
+x = 10, y = 20
+Tong: 15
+```
+
+**Lambda function** là 1 hàm cục bộ, bản chất là truyền vào con trỏ hàm và chỉ sử dụng 1 lần duy nhất. 
+</details>
 
 
 
