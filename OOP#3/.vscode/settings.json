@@ -1,0 +1,15 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "cmath": "cpp",
+        "ostream": "cpp",
+        "typeinfo": "cpp",
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "list": "cpp",
+        "iomanip": "cpp",
+        "chrono": "cpp",
+        "iosfwd": "cpp",
+        "algorithm": "cpp"
+    }
+}
