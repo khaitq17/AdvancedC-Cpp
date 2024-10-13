@@ -2954,6 +2954,156 @@ ptr2: 10
 </details>
 
 
+<details>
+	<summary><strong>BÀI 20: DESIGN PATTERN</strong></summary>
+
+# BÀI 20: DESIGN PATTERN
+**Design Pattern** là một giải pháp thiết kế, một công thức đã được chứng minh bằng thực tế để giải quyết một vấn đề thường gặp trong phát triển phần mềm. 
+
+Mỗi một Design Pattern sẽ đưa ra các interfaces, classes, mối quan hệ giữa chúng và cách thức chúng hoạt động để giải quyết được vấn đề một cách linh hoạt, đảm bảo tính mở rộng, bảo trì, sử dụng lại.
+
+## 20.1 Observer Pattern
+**Observer Pattern** là design pattern dùng để tạo ra mối quan hệ phụ thuộc giữa các đối tượng. Khi một đối tượng thay đổi trạng thái, tất cả các phụ thuộc của nó sẽ được thông báo và cập nhật tự động.
+
+```
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Interface for observers (display, logger, etc.)
+class Observer {
+public:
+    virtual void update(float temperature, float humidity, float light) = 0;
+};
+
+// Subject (SensorManager) holds the state and notifies observers
+class SensorManager {
+    float temperature;
+    float humidity;
+    float light;
+    vector<Observer*> observers;
+
+public:
+    void registerObserver(Observer* observer) {
+        observers.push_back(observer);
+    }
+
+    void removeObserver(Observer* observer) {
+        observers.erase(remove(observers.begin(), observers.end(), observer), observers.end());
+    }
+
+    void notifyObservers() {
+        for (auto observer : observers) {
+            observer->update(temperature, humidity, light);
+        }
+    }
+
+    void setMeasurements(float temp, float hum, float lightLvl) {
+        temperature = temp;
+        humidity = hum;
+        light = lightLvl;
+        notifyObservers();
+    }
+};
+
+// Display component (an observer)
+class Display : public Observer {
+public:
+    void update(float temperature, float humidity, float light) override {
+        cout << "Display: Temperature: " << temperature 
+             << ", Humidity: " << humidity 
+             << ", Light: " << light << endl;
+    }
+};
+
+// Logger component (an observer)
+class Logger : public Observer {
+public:
+    void update(float temperature, float humidity, float light) override {
+        cout << "Logging data... Temp: " << temperature 
+             << ", Humidity: " << humidity 
+             << ", Light: " << light << endl;
+    }
+};
+
+int main() {
+    SensorManager sensorManager;
+
+    Display display;
+    Logger logger;
+
+    sensorManager.registerObserver(&display);
+    sensorManager.registerObserver(&logger);
+
+    sensorManager.setMeasurements(25.0, 60.0, 700.0);
+}
+```
+
+## 20.2 Singleton Pattern
+**Singleton Pattern** là design pattern mà chỉ có tối đa một đối tượng cụ thể của class được khởi tạo xuyên suốt chương trình. Khi tạo ra nhiều object thì nó sẽ chỉ dùng chung 1 địa chỉ và giúp tối ưu bộ nhớ.
+
+```
+#include <iostream>
+
+void gpioInit() {
+    //
+}
+
+void gpioSetPin(int pin, bool value) {
+    // 
+}
+
+int gpioReadPin(int pin) {
+    // 
+    return 0;
+}
+
+class GpioManager {
+private:
+    GpioManager() {} // Constructor private
+    static GpioManager* instance; // Con trỏ tĩnh instance
+
+    void init() {
+        gpioInit();
+    }
+
+public:
+    static GpioManager* getInstance() {
+        if (!instance) {
+            instance = new GpioManager();
+            instance->init();
+        }
+        return instance;
+    }
+
+    void setPin(int pin, bool value) {
+        gpioSetPin(pin, value);
+    }
+
+    int readPin(int pin) {
+        return gpioReadPin(pin);
+    }
+};
+
+
+GpioManager* GpioManager::instance = nullptr;
+
+int main() {
+    GpioManager* gpioManager = GpioManager::getInstance();
+
+    gpioManager->setPin(5, true);
+    int pinValue = gpioManager->readPin(5); 
+
+    std::cout << "Pin 5 value: " << pinValue << std::endl;
+
+    return 0;
+}
+```
+
+</details>
 
 
 
