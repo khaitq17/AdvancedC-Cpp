@@ -3103,6 +3103,131 @@ int main() {
 }
 ```
 
+## 20.3 Factory Pattern
+**Factory Pattern** là design pattern dùng để khởi tạo 1 object mà lớp con quyết định loại đối tượng nào.
+
+```
+#include <iostream>
+
+
+using namespace std;
+
+typedef enum {
+    TEMPERATURE_SENSOR,
+    HUMIDITY_SENSOR 
+    //
+} SensorType;
+
+class Sensor {
+public:
+    virtual void readData() = 0;
+};
+
+// Cảm biến nhiệt độ
+class TemperatureSensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Reading temperature data: " << endl;
+    }
+};
+
+// Cảm biến độ ẩm
+class HumiditySensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Reading humidity data: " << endl;
+    }
+};
+
+// Factory Pattern
+class SensorFactory {
+public:
+    static Sensor* creatSensor(const SensorType type) {
+        switch (type)
+        {
+        case TEMPERATURE_SENSOR:
+            return new TemperatureSensor();
+            break;
+        
+        case HUMIDITY_SENSOR:
+            return new HumiditySensor();
+            break;
+
+        default:
+            return nullptr;
+            break;
+        }
+    }
+};
+
+
+int main() {
+    Sensor* sensor = SensorFactory::creatSensor(TEMPERATURE_SENSOR);
+    sensor->readData();
+}
+```
+
+## 20.4 Decorator Pattern
+**Decorator Patten** là design pattern thêm tính năng mới vào object mà không làm thay đổi cấu trúc của class.
+
+```
+#include <iostream>
+
+using namespace std;
+
+class Sensor {
+public:
+    virtual void readData() = 0;
+};
+
+// Cảm biến nhiệt độ
+class TemperatureSensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Reading temperature data: " << endl;
+    }
+};
+
+// Cảm biến độ ẩm
+class HumiditySensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Reading humidity data: " << endl;
+    }
+};
+
+// Decorator Pattern
+class SensorDecorator : public Sensor {
+protected:
+    Sensor* wrappedSensor;
+
+public:
+    SensorDecorator(Sensor* sensor) : wrappedSensor(sensor) {}
+    virtual void readData() override {
+        wrappedSensor->readData();
+    }
+};
+
+
+// Thêm tính năng Log
+class LoggingSensor : public SensorDecorator {
+public:
+    LoggingSensor(Sensor* sensor) : SensorDecorator(sensor) {}
+    void readData() override {
+        cout << "LOG: Sensor data" << endl;
+        SensorDecorator::readData();
+    } 
+};
+
+
+int main() {
+    Sensor* sensor = new TemperatureSensor();
+    Sensor* log = new LoggingSensor(sensor);
+
+    log->readData();
+}
+```
+
 </details>
 
 
