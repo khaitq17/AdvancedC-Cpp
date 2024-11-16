@@ -1,4 +1,226 @@
 <details>
+	<summary><strong>BÀI 1: COMPILER - MACRO</strong></summary>
+
+# BÀI 1: COMPILER - MACRO
+## 1.1 Compiler
+Quá trình biên dịch là quá trình chuyển đổi từ ngôn ngữ bậc cao (C, C++, Pascal, Java, C#,...) sang ngôn ngữ máy để máy tính có thể hiểu và thực thi.
+- B1: Giai đoạn tiền xử lý (Pre-processor): Nhận mã nguồn, xóa bỏ tất cả mọi chú thích, comment của chương trình, xử lý các chỉ thị tiền xử lý.
+- B2: Giai đoạn dịch ngôn ngữ bậc cao sang Assembly (Compiler): Phân tích và chuyển ngôn ngữ bậc cao sang ngôn ngữ bậc thấp Assembly.
+- B3: Giai đoạn dịch Assembly sang ngôn ngữ máy (Assembler): Dịch chương trình sang mã máy 0 và 1 để ra các file Object (.o).
+- B4: Giai đoạn liên kết (Linker): Liên kết csac file Object tạo thành 1 file duy nhất.
+- B5: Giai đoạn thực thi (Loader): File chạy cuối cùng sẽ được nạp lên RAM và thực thi bởi CPU.
+
+![image](https://github.com/khaitq17/C-Cpp/assets/159031971/a62be2b0-2812-43a0-afa7-5c22a9e1f3d4)
+
+## 1.2 Macro
+MACRO là một từ được sử dụng để chỉ thông tin được xử lý trong trình tiền xử lý. Chia thành 3 nhóm chính:
+- Tệp tiêu đề hoặc Thư viện: #include
+- Thay thế macro_name bằng macro_value trước khi biên dịch thành tệp .bin: #define, #undef
+- Chỉ thị biên dịch có điều kiện: #if, #elif, #else, #ifdef, #ifndef
+### 1.2.1 Tệp tiêu đề hoặc Thư viện: #include
+```
+#include<stdio.h>        // Thư viện
+#include "yourfile.h"    // Tệp tiêu đề (File header)
+```
+### 1.2.2 Macro #define, #undef
+#define
+```
+#include <stdio.h>
+        
+#define MESSAGE    "Hello World"     // Định nghĩa macro 
+#define TRUE        1                // Định nghĩa macro 
+#define FALSE       0                // Định nghĩa macro 
+#define SUM(a,b)    a+b              // Định nghĩa macro 
+        
+int main() {
+    printf("String: %s\n", MESSAGE);
+    printf("Custom boolean TRUE: %d\n", TRUE);
+    printf("Custom boolean FALSE: %d\n", FALSE);
+    printf("Arithmetic: 3+5=%d\n", SUM(3,5));
+    return 0;
+}
+```
+
+#undef
+```
+#define MESSAGE "Hello World!"    // Định nghĩa macro MESSAGE
+
+#undef MESSAGE      // Hủy bỏ định nghĩa macro MESSAGE
+
+#define  MESSAGE "Good luck!"     // Định nghĩa lại macro MESSAGE
+```
+### 1.2.3 Chỉ thị tiền xử lý điều kiện (#ifdef, #ifndef, #if, #endif, #else, #elif)
+```
+#ifndef _HEADERFILE_H
+#ifdef  _HEADERFILE_H
+
+#if (Condition 1){
+    //
+} #elif (Condition 2){
+    //
+} #else (Condition 3){
+    //
+}
+#endif     // if
+
+#endif    // ifndef
+```
+</details>
+
+<details>
+	<summary><strong>BÀI 2: STDARG - ASSERT</strong></summary>
+
+# BÀI 2: STDARG - ASSERT
+## 2.1 Thư viện <stdarg.h>
+Thư viện stdarg cung cấp các phương thức để làm việc với các hàm có số lượng tham số đầu vào không cố định.
+- `va_list`: Là một kiểu dữ liệu để đại diện cho danh sách các đối số biến đổi.
+- `va_start`: Bắt đầu một danh sách đối số biến đổi. Nó cần được gọi trước khi truy cập các đối số biến đổi đầu tiên.
+- `va_arg`: Truy cập một đối số trong danh sách. Hàm này nhận một đối số của kiểu được xác định bởi tham số thứ hai
+- `va_end`: Kết thúc việc sử dụng danh sách đối số biến đổi. Nó cần được gọi trước khi kết thúc hàm.
+
+Ví dụ:
+```
+#include <stdio.h>
+#include <stdarg.h>
+
+void display(int count, ...) {
+    va_list args;        // args là 1 con trỏ, dùng để các lưu địa chỉ các tham số truyền vào
+    va_start(args, count);    // va_start () tạo vùng nhớ, địa chỉ đầu tiên của nó là địa chỉ biến count đc lưu trong args
+   
+
+    for (int i = 0; i < count; i++) {
+        printf("Value at %d: %d\n", i, va_arg(args,int)); 
+    }
+
+    va_end(args);
+}
+
+int main()
+{
+    display(5, 5, 8, 15, 10, 13);        // count = 5
+
+    return 0;
+}
+```
+Output:
+```
+Value at 0: 5
+Value at 1: 8
+Value at 2: 15
+Value at 3: 10
+Value at 4: 10
+```
+
+Ví dụ:
+```
+#include <stdio.h>
+#include <stdarg.h>
+
+typedef enum {
+    TEMPERATURE_SENSOR,
+    PRESSURE_SENSOR
+} SensorType;
+
+void processSensorData(SensorType type, ...) {
+    va_list args;
+    va_start(args, type);
+
+    switch (type) {
+        case TEMPERATURE_SENSOR: {
+            int numArgs = va_arg(args, int);
+            int sensorId = va_arg(args, int);
+            float temperature = va_arg(args, double); // float được promote thành double
+            printf("Temperature Sensor ID: %d, Reading: %.2f degrees\n", sensorId, temperature);
+            if (numArgs > 2) {
+                // Xử lý thêm tham số nếu có
+                char* additionalInfo = va_arg(args, char*);
+                printf("Additional Info: %s\n", additionalInfo);
+            }
+            break;
+        }
+        case PRESSURE_SENSOR: {
+            int numArgs = va_arg(args, int);
+            int sensorId = va_arg(args, int);
+            int pressure = va_arg(args, int);
+            printf("Pressure Sensor ID: %d, Reading: %d Pa\n", sensorId, pressure);
+            if (numArgs > 2) {
+                // Xử lý thêm tham số nếu có
+                char* unit = va_arg(args, char*);
+                printf("Unit: %s\n", unit);
+            }
+            break;
+        }
+    }
+
+    va_end(args);
+}
+
+int main() {
+    processSensorData(TEMPERATURE_SENSOR, 3, 1, 36.5, "Room Temperature");
+    processSensorData(PRESSURE_SENSOR, 2, 2, 101325);
+    return 0;
+}
+```
+Output:
+```
+Temperature Sensor ID: 1, Reading: 36.50 degrees
+Additional Info: Room Temperature
+Pressure Sensor ID: 2, Reading: 101325 Pa
+```
+
+## 2.2 Thư viện <assert.h>
+- Cung cấp macro assert. 
+- Macro này được sử dụng để kiểm tra một điều kiện. 
+- Nếu điều kiện đúng (TRUE), không có gì xảy ra và chương trình tiếp tục thực thi.
+- Nếu điều kiện sai (FALSE), chương trình dừng lại và thông báo một thông điệp lỗi.
+- Dùng trong debug, dùng #define NDEBUG để tắt debug.
+
+```
+#include <stdio.h>
+#include <assert.h>
+int main() {
+    int x = 5;
+    assert(x == 5);
+    // Chương trình sẽ tiếp tục thực thi nếu điều kiện là đúng.
+    printf("X is: %d", x);
+    return 0;
+}
+```
+
+Macro dùng để debug
+```
+#define LOG(condition, cmd) assert(condition && #cmd);
+```
+
+Ví dụ:
+```
+#include <assert.h>
+#define ASSERT_IN_RANGE(val, min, max) assert((val) >= (min) && (val) <= (max))
+	
+void setLevel(int level) {
+    ASSERT_IN_RANGE(level, 1, 10);
+    // Thiết lập cấp độ
+}
+```
+
+Ví dụ:
+```
+#include <assert.h>
+#include <stdint.h>
+	
+#define ASSERT_SIZE(type, size) assert(sizeof(type) == (size))
+	
+void checkTypeSizes()
+{
+    ASSERT_SIZE(uint32_t, 4);
+    ASSERT_SIZE(uint16_t, 2);
+    // Kiểm tra các kích thước kiểu dữ liệu khác
+}
+```
+</details>
+
+
+<details>
 	<summary><strong>BÀI 3: POINTER</strong></summary>
 
 # BÀI 3: POINTER
@@ -3231,7 +3453,544 @@ int main() {
 </details>
 
 
+<details>
+	<summary><strong>BÀI 21: PROCESS - THREAD</strong></summary>
 
+# BÀI 21: PROCESS - THREAD
+## 21.1 Khái niệm
+- **Process** là một thực thể thực thi của một ứng dụng. Khi khởi tạo 1 process thì nó sẽ có 1 phân vùng RAM riêng, các process khác không thể truy cập đến vùng RAM của process này để chỉnh sửa được.
+- **Thread** là một phần thực thi trong một process. Một process có thể chứa nhiều thread và các thread trong cùng 1 process thì có thể chia sẻ tài nguyên (địa chỉ bộ nhớ).
+```
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+using namespace std;
+
+void delay(uint64_t time) {
+    this_thread::sleep_for(chrono::milliseconds(time));
+}
+
+void task1(int time) {
+    int i = 0;
+    for (int j = 0; j < 5; j++)
+    {
+        cout << "Task 1, i: " << i++ << endl;
+        delay(time);
+    }   
+}
+
+void task2(int time) {
+    int i = 0;
+    for (int j = 0; j < 5; j++)
+    {
+        cout << "Task 2, i: " << i++ << endl;
+        delay(time);
+    }   
+}
+
+int main() {
+    thread t1(task1, 500);
+    thread t2(task2, 1000);
+
+    t1.join();	// Tạo ra 1 luồng
+    t2.join();	// Tạo ra 1 luồng
+
+	// t1.detach();
+	// t2.detach();
+
+    cout << "Ket thuc!" << endl;
+	
+    return 0;
+}
+``` 
+|	 |join|detach|
+|:--:|:--:|:----:|
+|Khối chương trình|Luồng chính bị chặn, chờ thread con kết thúc|Luồng chính tiếp tục, thread con tự chạy độc lập|
+|Khả năng kiểm soát|Có thể theo dõi tiến trình và kết quả của thread|Không thể kiểm soát hoặc đồng bộ thread|
+|Ứng dụng|Khi cần đảm bảo thread con hoàn thành trước|Khi thread con thực hiện tác vụ dài và độc lập|
+
+Kiểm tra `joinable`: 
+- Trả về `true` nếu thread có thể join.
+- Trả về `false` nếu thread không thể join, tức là:
+	- Thread đã được join.
+	- Thread đã được detach.
+	- Thread chưa được gán (khởi tạo với trạng thái rỗng, không có thread nào chạy)
+Ví dụ:
+```
+#include <iostream>
+#include <thread>
+
+void threadFunction() {
+    std::cout << "Thread is running!" << std::endl;
+}
+
+int main() {
+    std::thread t(threadFunction);
+
+    if (t.joinable()) {
+        std::cout << "Thread is joinable!" << std::endl;
+        t.join(); // Kết hợp thread con với luồng chính
+    } else {
+        std::cout << "Thread is not joinable!" << std::endl;
+    }
+
+    return 0;
+}
+```
+Kết quả:
+```
+Thread is joinable!
+Thread is running!
+```
+
+Ví dụ:
+```
+#include <iostream>
+#include <thread>
+
+void threadFunction() {
+    std::cout << "Thread is running!" << std::endl;
+}
+
+int main() {
+    std::thread t;
+
+    if (t.joinable()) {
+        t.join();
+    } else {
+        std::cout << "Thread is not joinable because it is default-constructed!" << std::endl;
+    }
+
+    std::thread t2(threadFunction);
+    t2.detach(); // Tách thread ra
+
+    if (t2.joinable()) {
+        t2.join();
+    } else {
+        std::cout << "Thread is not joinable because it is detached!" << std::endl;
+    }
+
+    return 0;
+}
+```
+Kết quả:
+```
+Thread is not joinable because it is default-constructed!
+Thread is running!
+Thread is not joinable because it is detached!
+```
+
+## 21.2 Race condition
+**Race condition (điều kiện tranh chấp)** xảy ra trong lập trình đa luồng khi hai hoặc nhiều luồng cùng truy cập và thao tác trên tài nguyên dùng chung (shared resource) mà không có sự đồng bộ hóa thích hợp, dẫn đến hành vi không xác định hoặc không mong muốn.
+Ví dụ:
+```
+#include <iostream>
+#include <thread>
+
+using namespace std;
+
+void display(int id) {
+    
+    while(1) {
+        cout << "This is task display: " << id << endl;
+        delay(500);
+    }
+}
+int main() {
+    thread t1(display, 1);
+    thread t2(display, 2);
+    thread t3(display, 3);
+
+    t1.join();
+    t2.join();
+    t3.join();
+
+    return 0;
+}
+```
+Khi chạy chương trình có thể sẽ có 2 luồng ghi đè lên nhau do không đồng bộ.
+
+Vì vậy, có thể sử dụng **mutex** để đảm bảo chỉ một luồng có thể truy cập tài nguyên tại một thời điểm.
+
+```
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <mutex>
+
+using namespace std;
+
+mutex mtx;
+
+void delay(uint64_t time) {
+    this_thread::sleep_for(chrono::milliseconds(time));
+}
+
+void display(int id) {
+    
+    while(1) {
+        lock_guard<mutex> lock(mtx);	// Tự động khóa và mở khóa mutex
+        cout << "This is task display: " << id << endl;
+        delay(100);
+
+		cout << "Task: " << id << endl;
+    }
+
+}
+int main() {
+    thread t1(display, 1);
+    thread t2(display, 2);
+    thread t3(display, 3);
+
+    t1.join();
+    t2.join();
+    t3.join();
+
+    return 0;
+}
+```
+
+- `std::unique_lock` cũng dùng để quản lý việc khóa và mở khóa mutex nhưng cung cấp tính linh hoạt cao hơn so với `std::lock_guard`. `std::unique_lock` cho phép khóa và mở khóa thủ công, cũng như chuyển quyền sở hữu mutex giữa các đối tượng.
+
+Ở ví dụ trên, giả sử thread t1 chạy dòng `cout << "This is task display: " << id << endl;` và muốn thread 2 chạy nhưng thread 2 phải đợi chạy xong hàm `display` mới có thể chạy. Vì vậy, có thể dùng `unique_lock` để mở khóa thủ công để thread 2 có thể chạy luôn mà không cần đợi chạy xong hàm `display`.
+```
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <mutex>
+
+using namespace std;
+
+mutex mtx;
+
+void delay(uint64_t time) {
+    this_thread::sleep_for(chrono::milliseconds(time));
+}
+
+void display(int id) {
+    
+    while(1) {
+        unique_lock<mutex> lock(mtx);	// Khóa mutex
+        cout << "This is task display: " << id << endl;
+        
+        lock.unlock();	// Mở khóa thủ công
+        delay(200);
+
+        lock.lock();	// Khóa thủ công
+        cout << "Task: " << id << endl;
+        lock.unlock();	// Mở khóa thủ công
+    }
+}
+int main() {
+    thread t1(display, 1);
+    thread t2(display, 2);
+    thread t3(display, 3);
+
+    t1.join();
+    t2.join();
+    t3.join();
+
+    return 0;
+}
+```
+
+- `atomic` đảm bảo các thao tác trên biến nguyên tử (atomic operations), tức là không thể bị gián đoạn bởi luồng khác. `std::atomic` được cung cấp bởi thư viện <atomic>.
+	- Đảm bảo tính nguyên tử (atomicity):Mỗi thao tác đọc/ghi hoặc sửa đổi trên biến nguyên tử là toàn vẹn (không bị gián đoạn bởi các luồng khác) và loại bỏ các vấn đề race condition trong các thao tác cơ bản mà không cần sử dụng mutex.
+	- Hiệu suất cao hơn so với mutex: Không cần phải khóa toàn bộ tài nguyên, do đó giảm chi phí đồng bộ hóa.
+```
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <mutex>
+#include <atomic>
+
+using namespace std;
+
+mutex mtx;
+atomic<int> counter(0);
+
+void delay(uint64_t time) {
+    this_thread::sleep_for(chrono::milliseconds(time));
+}
+
+void display() {
+    
+    while(1) {
+        cout << "Counter: " << ++counter << endl;
+        delay(200);
+    }
+}
+
+int main() {
+    thread t1(display);
+    thread t2(display);
+    thread t3(display);
+
+    t1.join();
+    t2.join();
+    t3.join();
+
+    return 0;
+}
+```
+
+## 21.3 Condition variable
+**Condition Variable** trong C++ là một cơ chế đồng bộ hóa trong lập trình đa luồng, được sử dụng để cho phép một hoặc nhiều luồng chờ trong khi một luồng khác thông báo (notify) khi điều kiện cụ thể được thỏa mãn. `std::condition_variable` là công cụ chính trong C++ để thực hiện điều này, được cung cấp trong thư viện <condition_variable>.
+
+```
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
+using namespace std;
+
+int sensorData = 0;
+bool checkData = false;
+mutex mtx;
+condition_variable cv;
+
+
+
+void sensorRead() {
+    while (1)
+    {
+        this_thread::sleep_for(chrono::seconds(2)); // Delay 2s
+        unique_lock<mutex> lock(mtx);   // Khóa mutex
+        sensorData = rand() % 100;
+        checkData = true;
+        cout << "Read data done!" << endl;
+        lock.unlock();  // Mở khóa thủ công
+        cv.notify_one();    // Gửi thông báo đến một luồng đang chờ
+        //cv.notify_all();  // Gửi thông báo đến tất cả các luồng đang chờ
+    }
+    
+}
+
+void processData() {
+    while (1)
+    {
+        unique_lock<mutex> lock(mtx);   // Khóa mutex
+        cv.wait(lock, []{return checkData;});   // Đợi đọc giá trị cảm biến mới, tức là checkData trả về true 
+        cout << "Data: " << sensorData << endl;
+        checkData = false;
+        lock.unlock();  // Mở khóa thủ công
+    }
+    
+}
+
+int main() {
+    thread task1(sensorRead);
+    thread task2(processData);
+
+    task1.join();
+    task2.join();
+
+    return 0;
+}
+```
+
+
+## 21.4 Bất đồng bộ
+**Bất đồng bộ (asynchronous)** đề cập đến việc một tác vụ được thực thi mà không cần phải chờ tác vụ đó hoàn thành trước khi tiếp tục các tác vụ khác. Nó cho phép chương trình thực hiện nhiều công việc đồng thời, giúp tận dụng tài nguyên tốt hơn và tăng hiệu suất, đặc biệt trong các ứng dụng đòi hỏi xử lý đồng thời hoặc I/O.
+
+Ví dụ:
+```
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+
+using namespace std;
+
+int asyncTask() {
+    this_thread::sleep_for(chrono::seconds(3));
+    return 100;
+}
+
+void processResult(int id, future<int> ft) {
+    cout << "Task: " << id << ": " << ft.get() << endl;
+}
+
+int main() {
+    future<int> ft = async(launch::async, asyncTask);
+
+    thread t1(processResult, 1, move(ft));	// Với future phải dùng lệnh std::move để truy cập
+     
+    t1.join();
+
+	return 0;
+}
+```
+
+Ví dụ:
+```
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+
+using namespace std;
+
+int asyncTask() {
+    this_thread::sleep_for(chrono::seconds(3));
+    return 100;
+}
+
+void processResult(int id, shared_future<int> ft) {
+    cout << "Task: " << id << ": " << ft.get() << endl;
+}
+
+int main() {
+    //future<int> ft = async(launch::async, asyncTask);
+    //shared_future<int> shared_ft = ft.share();
+	shared_future<int> shared_ft = async(launch::async, asyncTask).share();
+
+    thread t1(processResult, 1, shared_ft); 
+    thread t2(processResult, 2, shared_ft);   
+     
+    t1.join();
+    t2.join();
+
+	return 0;
+}
+```
+
+**Một số hàm khác**
+- `wait()`:
+```
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+
+using namespace std;
+
+int asyncTask() {
+    this_thread::sleep_for(chrono::seconds(3));
+    return 100;
+}
+
+void processResult(int id, shared_future<int> ft) {
+    cout << "Task: " << id << ": " << ft.get() << endl;
+}
+
+int main() {
+    future<int> ft = async(launch::async, asyncTask);
+
+    cout << "LOG 1" << endl;
+
+    ft.wait();  // Chờ tác vụ bất đông bộ hoàn thành
+
+    cout << "LOG 2: " << ft.get() << endl;
+
+    return 0;
+}
+```
+
+- `wait_for()`:
+```
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+
+using namespace std;
+
+int asyncTask() {
+    this_thread::sleep_for(chrono::seconds(3));
+    return 100;
+}
+
+void processResult(int id, shared_future<int> ft) {
+    cout << "Task: " << id << ": " << ft.get() << endl;
+}
+
+int main() {
+    future<int> ft = async(launch::async, asyncTask);
+
+    cout << "LOG 1" << endl;
+
+    // Chờ một khoảng thời gian nhất định trước khi trả lại kết quả, thay vì đợi vô thời hạn
+    if (ft.wait_for(std::chrono::seconds(1)) == std::future_status::ready) {    
+        cout << "Task finished before timeout." << endl;
+    } else {
+        cout << "Task did not finish within the timeout." << endl;
+    }
+
+    return 0;
+}
+```
+
+- `wait_until()`:
+```
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+
+using namespace std;
+
+int asyncTask() {
+    this_thread::sleep_for(chrono::seconds(3));
+    return 100;
+}
+
+void processResult(int id, shared_future<int> ft) {
+    cout << "Task: " << id << ": " << ft.get() << endl;
+}
+
+int main() {
+    future<int> ft = async(launch::async, asyncTask);
+
+    cout << "LOG 1" << endl;
+
+    auto timeout = chrono::system_clock::now() + chrono::seconds(10);
+
+    // Chờ đến một thời điểm cụ thể thay vì chờ trong một khoảng thời gian nhất định.
+    if (ft.wait_until(timeout) == std::future_status::ready) {
+        cout << "Task finished before timeout." << endl;
+    } else {
+        cout << "Task did not finish before the deadline." << endl;
+    }
+    
+    return 0;
+}
+```
+
+- `valid()`:
+```
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+
+using namespace std;
+
+int asyncTask() {
+    this_thread::sleep_for(chrono::seconds(3));
+    return 100;
+}
+
+void processResult(int id, shared_future<int> ft) {
+    cout << "Task: " << id << ": " << ft.get() << endl;
+}
+
+int main() {
+    future<int> ft = async(launch::async, asyncTask);
+
+    // Kiểm tra xem tác vụ bất đồng bộ đã hoàn thành hay chưa, hoặc nếu có một vấn đề xảy ra khi khởi tạo future
+    if (ft.valid()) {
+        cout << "Future is valid." << endl;
+    } else {
+        cout << "Future is not valid." << endl;
+    }
+
+    return 0;
+}
+```
+</details>
 
 
 
